@@ -11,10 +11,12 @@
 #include <stdio.h>
 #include "class/test.h"
 #include "class/string.h"
+#include "class/init.h"
 
 int main()
 {
-	string_t *str = init_string();
+	string_t *str = new(string);
+	struct testObj *obj = new(testObj);
 
 	str->assign("bonjour");
 	printf("%ld: [%s]\n", str->length(), str->front());
@@ -22,5 +24,9 @@ int main()
 	*str->back() = 'Z';
 	printf("[%s]\n", str->front());
 
-	delete_string(str);
+	obj->setA(42);
+	printf("%d: %s\n", obj->getA(), str->front());
+
+	delete(string, str);
+	delete(testObj, obj);
 }

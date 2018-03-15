@@ -10,6 +10,7 @@
 struct testObj {
 	void (*print)(void);
 	void (*setA)(int);
+	int (*getA)();
 
 	#ifdef PRIVATE_TEST
 	int memberSize;
@@ -17,10 +18,11 @@ struct testObj {
 	#endif
 };
 
-struct testObj	*init_test_obj();
-void		delete_test_obj(struct testObj *);
+struct testObj	*init_testObj();
+void		delete_testObj(struct testObj *);
 
 #ifdef PRIVATE_TEST
 void print(struct testObj *);
 void setA(int, struct testObj *);
+int getA(struct testObj *);
 #endif

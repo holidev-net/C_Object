@@ -14,28 +14,35 @@
 #include "test.h"
 #include "init.h"
 
-void print(struct testObj *obj)
+void print(struct testObj *this)
 {
-	printf("%d\n", obj->a);
+	printf("%d\n", this->a);
 }
 
-void setA(int a, struct testObj *obj)
+void setA(int a, struct testObj *this)
 {
-	obj->a = a;
+	this->a = a;
 }
 
-struct testObj	*init_test_obj()
+int getA(struct testObj *this)
+{
+	return (this->a);
+}
+
+struct testObj	*init_testObj()
 {
 	struct testObj *b = malloc(sizeof(struct testObj));
 
 	b->print = init_member(b, &print, 0, &b->memberSize);
 	b->setA = init_member(b, &setA, 1, NULL);
+	b->getA = init_member(b, &getA, 0, NULL);
 	return b;
 }
 
-void delete_test_obj(struct testObj *obj)
+void delete_testObj(struct testObj *obj)
 {
 	delete_member(obj->print, obj->memberSize);
 	delete_member(obj->setA, obj->memberSize);
+	delete_member(obj->getA, obj->memberSize);
 	free(obj);
 }
