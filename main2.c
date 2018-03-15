@@ -6,19 +6,23 @@
 */
 
 // #define PRIVATE_TEST
+// #define PRIVATE_STRING
 
+#include <stdio.h>
 #include "class/test.h"
 #include <stdio.h>
+#include "class/string.h"
 
 int main()
 {
-	struct testObj *o = init_test_obj();
+	string_t *str = init_string();
 
         printf("");
-	// o->a = 23;
-	o->setA(23);
-	o->print();
-	// print(o);
+	str->assign("bonjour");
+	printf("%ld: [%s]\n", str->length(), str->front());
+	*str->at(3) = 'O';
+	*str->back() = 'Z';
+	printf("[%s]\n", str->front());
 
-	delete_test_obj(o);
+	delete_string(str);
 }

@@ -7,5 +7,5 @@
 
 #pragma once
 
-void *init_member(void *obj, void *func, int nb_args, int *size);
-void delete_member(void *member, int size);
+void *init_member(void *obj, void *func, int nb_args);
+void delete_member(void *member);
