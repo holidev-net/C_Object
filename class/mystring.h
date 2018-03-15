@@ -20,7 +20,6 @@ typedef struct string {
 	char	*(*back)();
 
 	#ifdef PRIVATE_STRING
-	int	memberSize;
 	size_t	_size;
 	char	*_str;
 	#endif

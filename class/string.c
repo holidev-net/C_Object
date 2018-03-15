@@ -8,12 +8,10 @@
 #define PRIVATE_STRING
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
-#include "string.h"
+#include "mystring.h"
 #include "init.h"
-
-char *strdup(const char *);
-size_t strlen(const char *);
 
 void assign(const char *str, string_t *this)
 {
@@ -75,9 +73,6 @@ string_t	*init_string()
 		return (NULL);
 	}
 	obj->_size = 0;
-	obj->_str = malloc(sizeof(char));
-	if (obj->_str == NULL)
-		return (free(obj), NULL);
 	obj->_str = NULL;
 	obj->assign = init_member(obj, &assign, 1);
 	obj->length = init_member(obj, &length, 0);

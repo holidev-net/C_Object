@@ -13,7 +13,6 @@ struct testObj {
 	int (*getA)();
 
 	#ifdef PRIVATE_TEST
-	int memberSize;
 	int a;
 	#endif
 };
