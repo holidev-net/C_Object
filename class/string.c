@@ -75,26 +75,29 @@ string_t	*init_string()
 		return (NULL);
 	}
 	obj->_size = 0;
+	obj->_str = malloc(sizeof(char));
+	if (obj->_str == NULL)
+		return (free(obj), NULL);
 	obj->_str = NULL;
-	obj->assign = init_member(obj, &assign, 1, &obj->memberSize);
-	obj->length = init_member(obj, &length, 0, NULL);
-	obj->clear = init_member(obj, &clear, 0, NULL);
-	obj->empty = init_member(obj, &empty, 0, NULL);
-	obj->at = init_member(obj, &at, 1, NULL);
-	obj->front = init_member(obj, &front, 0, NULL);
-	obj->back = init_member(obj, &back, 0, NULL);
+	obj->assign = init_member(obj, &assign, 1);
+	obj->length = init_member(obj, &length, 0);
+	obj->clear = init_member(obj, &clear, 0);
+	obj->empty = init_member(obj, &empty, 0);
+	obj->at = init_member(obj, &at, 1);
+	obj->front = init_member(obj, &front, 0);
+	obj->back = init_member(obj, &back, 0);
 	return (obj);
 }
 
 void		delete_string(string_t *obj)
 {
 	obj->clear();
-	delete_member(obj->assign, obj->memberSize);
-	delete_member(obj->length, obj->memberSize);
-	delete_member(obj->clear, obj->memberSize);
-	delete_member(obj->empty, obj->memberSize);
-	delete_member(obj->at, obj->memberSize);
-	delete_member(obj->front, obj->memberSize);
-	delete_member(obj->back, obj->memberSize);
+	delete_member(obj->assign);
+	delete_member(obj->length);
+	delete_member(obj->clear);
+	delete_member(obj->empty);
+	delete_member(obj->at);
+	delete_member(obj->front);
+	delete_member(obj->back);
 	free(obj);
 }
