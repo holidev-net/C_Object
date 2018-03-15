@@ -18,6 +18,7 @@ typedef struct string {
 	char	*(*at)(size_t);
 	char	*(*front)();
 	char	*(*back)();
+
 	#ifdef PRIVATE_STRING
 	int	memberSize;
 	size_t	_size;

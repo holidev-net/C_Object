@@ -88,6 +88,7 @@ string_t	*init_string()
 
 void		delete_string(string_t *obj)
 {
+	obj->clear();
 	delete_member(obj->assign, obj->memberSize);
 	delete_member(obj->length, obj->memberSize);
 	delete_member(obj->clear, obj->memberSize);
