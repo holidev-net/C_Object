@@ -31,7 +31,7 @@ string_t	*init_string()
 	if (obj->_str == NULL)
 		return (free(obj), NULL);
 	*obj->_str = '\0';
-	obj->assign = init_member(obj, &assign, 0, &obj->memberSize);
+	obj->assign = init_member(obj, &assign, 0);
 	return obj;
 }
 

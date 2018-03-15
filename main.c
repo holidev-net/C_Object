@@ -51,6 +51,7 @@ int main()
 	struct monObj *b = init();
 	struct monObj *b2 = init();
 
+        printf("");
 	b->a = 64;
 	b2->a = 21;
 	b->print();

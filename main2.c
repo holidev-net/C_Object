@@ -8,11 +8,13 @@
 // #define PRIVATE_TEST
 
 #include "class/test.h"
+#include <stdio.h>
 
 int main()
 {
 	struct testObj *o = init_test_obj();
 
+        printf("");
 	// o->a = 23;
 	o->setA(23);
 	o->print();

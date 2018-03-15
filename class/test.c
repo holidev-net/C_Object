@@ -28,14 +28,14 @@ struct testObj	*init_test_obj()
 {
 	struct testObj *b = malloc(sizeof(struct testObj));
 
-	b->print = init_member(b, &print, 0, &b->memberSize);
-	b->setA = init_member(b, &setA, 1, NULL);
+	b->print = init_member(b, &print, 0);
+	b->setA = init_member(b, &setA, 1);
 	return b;
 }
 
 void delete_test_obj(struct testObj *obj)
 {
-	delete_member(obj->print, obj->memberSize);
-	delete_member(obj->setA, obj->memberSize);
+	delete_member(obj->print);
+	delete_member(obj->setA);
 	free(obj);
 }
