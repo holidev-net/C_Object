@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include "class/test.h"
 #include <stdio.h>
-#include "class/string.h"
+#include "class/mystring.h"
 #include "class/init.h"
 
 int main()
@@ -19,7 +19,6 @@ int main()
 	string_t *str = new(string);
 	struct testObj *obj = new(testObj);
 
-	printf("");
 	str->assign("bonjour");
 	printf("%ld: [%s]\n", str->length(), str->front());
 	*str->at(3) = 'O';

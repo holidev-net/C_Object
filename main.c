@@ -14,6 +14,12 @@ void print(struct monObj *obj)
 	printf("%d\n", obj->a);
 }
 
+void test()
+{
+        void (*ptr)(void*) = (void*) 0x1234567899876;
+        ptr((void*) 0x98765432112345);
+}
+
 struct monObj	*init()
 {
 	struct monObj *b = malloc(sizeof(struct monObj));
@@ -22,8 +28,7 @@ struct monObj	*init()
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x48, 0xbf,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-		0xff, 0xd0,
-		0xc3
+		0xff, 0xe0,
 	};
 	b->printSize = sizeof(buf);
 	void *virtualCodeAddress = mmap(
@@ -51,9 +56,8 @@ int main()
 	struct monObj *b = init();
 	struct monObj *b2 = init();
 
-        printf("");
 	b->a = 64;
-	b2->a = 21;
+	b2->a = 22;
 	b->print();
 	b2->print();
 
