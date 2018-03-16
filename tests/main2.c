@@ -14,23 +14,12 @@
 
 int main()
 {
-	string_t *str = new(string);
-	struct testObj *obj = new(testObj);
-	stream_t *stream = new(stream);
+	stream_t *stdout = new(stream);
+	stream_t *strerr = new(stream, stderr);
 
-	str->assign("bonjour");
-	printf("%ld: [%s]\n", str->length(), str->front());
-	*str->at(3) = 'O';
-	*str->back() = 'Z';
-	printf("[%s]\n", str->front());
+	stdout->str("stdout: ")->i(42)->str(" char")->endl();
+	strerr->str("strerr: ")->i(42)->str(" char")->endl();
 
-	obj->setA(42);
-	printf("%d: %s\n", obj->getA(), str->front());
-
-	stream->src(stderr);
-	stream->str("bonjour: ")->i(42)->str(" char")->endl();
-
-	delete(string, str);
-	delete(testObj, obj);
-	delete(stream, stream);
+	delete(stream, stdout);
+	delete(stream, strerr);
 }

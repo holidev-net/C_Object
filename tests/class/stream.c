@@ -57,13 +57,8 @@ void flush(stream_t *this)
 	fflush(this->stream);
 }
 
-stream_t	*init_stream()
+void stream_ctor(stream_t *obj)
 {
-	stream_t *obj = malloc(sizeof(stream_t));
-
-	if (obj == NULL) {
-		return (NULL);
-	}
 	obj->stream = stdout;
 	init_members(obj, 7,
 		CREATE_WRAP(obj, str, &write_str, 1),
@@ -74,6 +69,28 @@ stream_t	*init_stream()
 		CREATE_WRAP(obj, flush, &flush, 0),
 		CREATE_WRAP(obj, src, &write_src, 1)
 		);
+}
+
+stream_t	*init_stream0()
+{
+	stream_t *obj = malloc(sizeof(stream_t));
+
+	if (obj == NULL) {
+		return (NULL);
+	}
+	stream_ctor(obj);
+	return (obj);
+}
+
+stream_t	*init_stream1(FILE *file)
+{
+	stream_t *obj = malloc(sizeof(stream_t));
+
+	if (obj == NULL) {
+		return (NULL);
+	}
+	stream_ctor(obj);
+	obj->stream = file;
 	return (obj);
 }
 

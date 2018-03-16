@@ -13,13 +13,13 @@
 
 typedef struct
 {
-        void    **funct;
-        void    *target;
-        int     nb_args;
+	void    **funct;
+	void    *target;
+	int     nb_args;
 }       init_wrap_t;
 
 int     init_members(void *obj, int nb_funct, ...);
 void    delete_members(void *first_member);
 
 #define delete(type, obj)	delete_##type(obj);
-#define new(type)		init_##type();
+#define new(type, ...)		init_##type(__VA_ARGS__);
