@@ -5,15 +5,75 @@
 ** description
 */
 
-#define PRIVATE_STREAM
+#include <stdio.h>
+#include <stdlib.h>
 
+#include "init.h"
+#define PRIVATE_STREAM
 #include "stream.h"
 
-stream_t *write_str(char *str, stream_t *);
-stream_t *write_c(char c, stream_t *);
-stream_t *write_i(int i, stream_t *);
-stream_t *write_ld(long l, stream_t *);
-stream_t *write_endl(stream_t *);
+stream_t *write_str(char *str, stream_t *this)
+{
+	fprintf(this->stream, "%s", str);
+	return (this);
+}
 
-stream_t	*init_stream();
-void		delete_stream(stream_t *);
+stream_t *write_c(char c, stream_t *this)
+{
+	fprintf(this->stream, "%c", c);
+	return (this);
+
+}
+
+stream_t *write_i(int i, stream_t *this)
+{
+	fprintf(this->stream, "%i", i);
+	return (this);
+}
+
+stream_t *write_ld(long l, stream_t *this)
+{
+	fprintf(this->stream, "%ld", l);
+	return (this);
+}
+
+stream_t *write_endl(stream_t *this)
+{
+	fprintf(this->stream, "\n");
+	fflush(this->stream);
+	return (this);
+}
+
+void flush(stream_t *this)
+{
+	fflush(this->stream);
+}
+
+stream_t	*init_stream()
+{
+	stream_t *obj = malloc(sizeof(stream_t));
+
+	if (obj == NULL) {
+		return (NULL);
+	}
+	obj->stream = stdout;
+	init_members(obj, 5,
+		CREATE_WRAP(obj, str, &write_str, 1),
+		CREATE_WRAP(obj, c, &write_c, 1),
+		CREATE_WRAP(obj, i, &write_i, 1),
+		CREATE_WRAP(obj, ld, &write_ld, 1),
+		CREATE_WRAP(obj, endl, &write_endl, 0),
+		CREATE_WRAP(obj, flush, &flush, 0)
+		);
+	return (obj);
+}
+
+void		delete_stream(stream_t *obj)
+{
+	delete_members(obj->str);
+	delete_members(obj->c);
+	delete_members(obj->i);
+	delete_members(obj->ld);
+	delete_members(obj->endl);
+	free(obj);
+}

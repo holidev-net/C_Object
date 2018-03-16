@@ -74,14 +74,14 @@ string_t	*init_string()
 	}
 	obj->_size = 0;
 	obj->_str = NULL;
-        init_members(obj, 7, 
-                CREATE_WRAP(obj, assign, &assign, 1),
-                CREATE_WRAP(obj, length, &length, 0),
-                CREATE_WRAP(obj, clear, &clear, 0),
-                CREATE_WRAP(obj, empty, &empty, 0),
-                CREATE_WRAP(obj, at, &at, 1),
-                CREATE_WRAP(obj, front, &front, 0),
-                CREATE_WRAP(obj, back, &back, 0));
+	init_members(obj, 7,
+		CREATE_WRAP(obj, assign, &assign, 1),
+		CREATE_WRAP(obj, length, &length, 0),
+		CREATE_WRAP(obj, clear, &clear, 0),
+		CREATE_WRAP(obj, empty, &empty, 0),
+		CREATE_WRAP(obj, at, &at, 1),
+		CREATE_WRAP(obj, front, &front, 0),
+		CREATE_WRAP(obj, back, &back, 0));
 	return (obj);
 }
 
