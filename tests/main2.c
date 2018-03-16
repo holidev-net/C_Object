@@ -14,12 +14,12 @@
 
 int main()
 {
-	stream_t *stdout = new(stream);
-	stream_t *strerr = new(stream, stderr);
+	stream_t *_stdout = new(stream);
+	stream_t *_stderr = new(stream, stderr);
 
-	stdout->str("stdout: ")->i(42)->str(" char")->endl();
-	strerr->str("strerr: ")->i(42)->str(" char")->endl();
+	_stdout->str("stdout: ")->i(42)->str(" char")->endl();
+	_stderr->str("stderr: ")->i(42)->str(" char")->endl();
 
-	delete(stream, stdout);
-	delete(stream, strerr);
+	delete(stream, _stdout);
+	delete(stream, _stderr);
 }
