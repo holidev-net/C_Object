@@ -44,6 +44,14 @@ stream_t *write_endl(stream_t *this)
 	return (this);
 }
 
+FILE *write_src(FILE *target, stream_t *this)
+{
+	if (target)
+		this->stream = target;
+	return (this->stream);
+}
+
+
 void flush(stream_t *this)
 {
 	fflush(this->stream);
@@ -57,13 +65,14 @@ stream_t	*init_stream()
 		return (NULL);
 	}
 	obj->stream = stdout;
-	init_members(obj, 6,
+	init_members(obj, 7,
 		CREATE_WRAP(obj, str, &write_str, 1),
 		CREATE_WRAP(obj, c, &write_c, 1),
 		CREATE_WRAP(obj, i, &write_i, 1),
 		CREATE_WRAP(obj, ld, &write_ld, 1),
 		CREATE_WRAP(obj, endl, &write_endl, 0),
-		CREATE_WRAP(obj, flush, &flush, 0)
+		CREATE_WRAP(obj, flush, &flush, 0),
+		CREATE_WRAP(obj, src, &write_src, 1)
 		);
 	return (obj);
 }

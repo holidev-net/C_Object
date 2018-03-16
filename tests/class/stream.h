@@ -15,6 +15,7 @@ typedef struct stream {
 	struct stream *(*i)(int);
 	struct stream *(*ld)(long);
 	struct stream *(*endl)();
+	FILE *(*src)(FILE*);
 	void (*flush)();
 
 	#ifdef PRIVATE_STREAM

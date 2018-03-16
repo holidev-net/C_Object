@@ -27,6 +27,7 @@ int main()
 	obj->setA(42);
 	printf("%d: %s\n", obj->getA(), str->front());
 
+	stream->src(stderr);
 	stream->str("bonjour: ")->i(42)->str(" char")->endl();
 
 	delete(string, str);
