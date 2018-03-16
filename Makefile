@@ -7,21 +7,30 @@ SRCS	=	init_member.c
 
 OBJS	=	$(addprefix objs/, $(SRCS:.c=.o))
 
-NAME	=	libcobject.so
+NAME	=	cobject
 
-all		:	$(NAME)
+DYNAME	=	lib$(NAME).so
+
+STNAME	=	libstatic_$(NAME).a
+
+all		:	$(DYNAME) $(STNAME)
 
 objs/%.o	:	srcs/%.c
 			@mkdir -p $(dir $@)
 			$(CC) $(CFLAGS)	-c -o $@ $<
 
-$(NAME)		:	$(OBJS)
-			$(CC) -shared -o $(NAME) $(OBJS)
+$(DYNAME)	:	$(OBJS)
+			$(CC) -shared -o $(DYNAME) $(OBJS)
+
+$(STNAME)	:	$(OBJS)
+			ar rc $(STNAME) $(OBJS)
+			ranlib $(STNAME)
 
 clean		:
 			rm -rf objs;
 
 fclean		:	clean
-			rm $(NAME)
+			rm -f $(DYNAME)
+			rm -f $(STNAME)
 
 re		:	fclean all

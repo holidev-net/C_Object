@@ -2,4 +2,5 @@ a.out
 *dSYM*
 *.o
 *.so
+*.a
 !tests/libcobject.so
