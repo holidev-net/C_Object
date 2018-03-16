@@ -12,7 +12,7 @@
 #include "class/test.h"
 #include <stdio.h>
 #include "class/mystring.h"
-#include "class/init.h"
+#include "init.h"
 
 int main()
 {

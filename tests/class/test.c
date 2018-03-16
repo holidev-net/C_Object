@@ -33,16 +33,15 @@ struct testObj	*init_testObj()
 {
 	struct testObj *b = malloc(sizeof(struct testObj));
 
-	b->print = init_member(b, &print, 0);
-	b->setA = init_member(b, &setA, 1);
-	b->getA = init_member(b, &getA, 0);
+	init_members(b, 3,
+                CREATE_WRAP(b, print, &print, 0),
+                CREATE_WRAP(b, setA, &setA, 1),
+                CREATE_WRAP(b, getA, &getA, 0));
 	return b;
 }
 
 void delete_testObj(struct testObj *obj)
 {
-	delete_member(obj->print);
-	delete_member(obj->setA);
-	delete_member(obj->getA);
+	delete_members(obj->print);
 	free(obj);
 }
