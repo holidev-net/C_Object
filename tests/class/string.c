@@ -74,25 +74,20 @@ string_t	*init_string()
 	}
 	obj->_size = 0;
 	obj->_str = NULL;
-	obj->assign = init_member(obj, &assign, 1);
-	obj->length = init_member(obj, &length, 0);
-	obj->clear = init_member(obj, &clear, 0);
-	obj->empty = init_member(obj, &empty, 0);
-	obj->at = init_member(obj, &at, 1);
-	obj->front = init_member(obj, &front, 0);
-	obj->back = init_member(obj, &back, 0);
+        init_members(obj, 7, 
+                CREATE_WRAP(obj, assign, &assign, 1),
+                CREATE_WRAP(obj, length, &length, 0),
+                CREATE_WRAP(obj, clear, &clear, 0),
+                CREATE_WRAP(obj, empty, &empty, 0),
+                CREATE_WRAP(obj, at, &at, 1),
+                CREATE_WRAP(obj, front, &front, 0),
+                CREATE_WRAP(obj, back, &back, 0));
 	return (obj);
 }
 
 void		delete_string(string_t *obj)
 {
 	obj->clear();
-	delete_member(obj->assign);
-	delete_member(obj->length);
-	delete_member(obj->clear);
-	delete_member(obj->empty);
-	delete_member(obj->at);
-	delete_member(obj->front);
-	delete_member(obj->back);
+	delete_members(obj->assign);
 	free(obj);
 }

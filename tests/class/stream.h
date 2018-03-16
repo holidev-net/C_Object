@@ -10,11 +10,11 @@
 #include <stdio.h>
 
 typedef struct stream {
-	struct stream *(*str)(struct a *, char *str);
-	struct stream *(*c)(struct a *, char);
-	struct stream *(*i)(struct a *, int);
-	struct stream *(*ld)(struct a *, long);
-	struct stream *(*endl)(struct a *);
+	struct stream *(*str)(char *str);
+	struct stream *(*c)(char);
+	struct stream *(*i)(int);
+	struct stream *(*ld)(long);
+	struct stream *(*endl)();
 
 	#ifdef PRIVATE_STREAM
 	FILE *stream;
