@@ -14,22 +14,14 @@
 
 int main()
 {
-	string_t *str = new(string);
-	struct testObj *obj = new(testObj);
-	stream_t *stream = new(stream);
+	FILE *f = fopen("blabla", "w");
+	stream_t *stream1 = new(stream);
+	stream_t *stream2 = new(stream, f);
 
-	str->assign("bonjour");
-	printf("%ld: [%s]\n", str->length(), str->front());
-	*str->at(3) = 'O';
-	*str->back() = 'Z';
-	printf("[%s]\n", str->front());
+	stream1->str("stream1: ")->i(42)->str(" char")->endl();
+	stream2->str("stream2: ")->i(42)->str(" char")->endl();
 
-	obj->setA(42);
-	printf("%d: %s\n", obj->getA(), str->front());
-
-	stream->str("bonjour: ")->i(42)->str(" char")->endl();
-
-	delete(string, str);
-	delete(testObj, obj);
-	delete(stream, stream);
+	delete(stream, stream1);
+	delete(stream, stream2);
+	fclose(f);
 }
