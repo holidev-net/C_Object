@@ -31,4 +31,5 @@ int main()
 
 	delete(string, str);
 	delete(testObj, obj);
+	delete(stream, stream);
 }
