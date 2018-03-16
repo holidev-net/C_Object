@@ -71,9 +71,5 @@ stream_t	*init_stream()
 void		delete_stream(stream_t *obj)
 {
 	delete_members(obj->str);
-	delete_members(obj->c);
-	delete_members(obj->i);
-	delete_members(obj->ld);
-	delete_members(obj->endl);
 	free(obj);
 }
