@@ -34,9 +34,9 @@ static const unsigned char  _caller_template_g[] = {
 	0xff, 0xe0, // jmp rax
 };
 
-static const size_t  _alignedSize_g = (sizeof(_caller_template_g) % 16 == 0 
-                        ? sizeof(_caller_template_g) 
-                        : sizeof(_caller_template_g) + (sizeof(_caller_template_g) - (sizeof(_caller_template_g) % ALIGN)));
+static const size_t  _alignedSize_g =
+				sizeof(_caller_template_g) / 16 * 16 +
+				!!(sizeof(_caller_template_g) % 16) * 16;
 
 static inline int init_member_write_member_callers(
 	void *obj, va_list vl, void *caller_address, int nb_functs)
