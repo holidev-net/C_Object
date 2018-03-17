@@ -62,7 +62,7 @@ int init_members(void *obj, int nb_functs, ...)
 {
         va_list         vl;
 	void    *caller_address = mmap(NULL, _alignedSize_g + ALIGN,
-		        PROT_READ | PROT_WRITE | PROT_EXEC,
+		        PROT_READ | PROT_WRITE,
 		        MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 
         if (caller_address == (void*) -1)
