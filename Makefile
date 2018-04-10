@@ -1,19 +1,32 @@
+##
+## EPITECH PROJECT, 2017
+## Makefile for C_Object
+## File description:
+## description
+##
 
-CC	=	gcc
+CC		=	gcc
 
-CFLAGS	=	-W -Wall -Wextra -fPIC -O2 -I ./includes/
+CFLAGS		=	-W -Wall -Wextra -fPIC -O2 -I ./includes/
 
-SRCS	=	init_member.c
+SRCS		=	init_member.c			\
+			class/list/list.c		\
+			class/string/string.c		\
+			class/stream/stream.c		\
 
-OBJS	=	$(addprefix objs/, $(SRCS:.c=.o))
+OBJS		=	$(addprefix objs/, $(SRCS:.c=.o))
 
-NAME	=	cobject
+NAME		=	cobject
 
-DYNAME	=	lib$(NAME).so
+DYNAME		=	lib$(NAME).so
 
-STNAME	=	libstatic_$(NAME).a
+STNAME		=	libstatic_$(NAME).a
 
-all		:	$(DYNAME) $(STNAME)
+all		:	dynamic static
+
+dynamic		:	$(DYNAME)
+
+static		:	$(STNAME)
 
 objs/%.o	:	srcs/%.c
 			@mkdir -p $(dir $@)

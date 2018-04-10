@@ -1,7 +1,4 @@
-SRCS	=	main2.c		\
-		class/test.c	\
-		class/string.c	\
-		class/stream.c	\
+SRCS	=	main2.c
 
 all:
 	make -C .. re

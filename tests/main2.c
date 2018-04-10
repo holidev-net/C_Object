@@ -5,21 +5,29 @@
 ** description
 */
 
+#define PRIVATE_LIST
 #include <stdio.h>
-#include "class/test.h"
-#include <stdio.h>
-#include "class/mystring.h"
-#include "class/stream.h"
+#include "list.h"
+#include "str.h"
+#include "stream.h"
 #include "init.h"
+
+void print(int *data)
+{
+	printf("%d ", *data);
+}
 
 int main()
 {
-	stream_t *_stdout = new(stream);
-	stream_t *_stderr = new(stream, stderr);
+	list_t *list = new(list, sizeof(int));
 
-	_stdout->str("stdout: ")->i(42)->str(" char")->endl();
-	_stderr->str("stderr: ")->i(42)->str(" char")->endl();
-
-	delete(stream, _stdout);
-	delete(stream, _stderr);
+	for (int i = 0; i < 10; ++i)
+		list->push_front(i);
+	list->foreach(print);
+	list->reverse();
+	puts("");
+	*list->front() = 42;
+	list->foreach(print);
+	puts("");
+	delete(list, list);
 }

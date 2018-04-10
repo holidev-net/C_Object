@@ -1,0 +1,1 @@
+../srcs/class/string/str.h
