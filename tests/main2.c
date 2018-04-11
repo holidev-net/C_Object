@@ -64,6 +64,8 @@ int main()
 	puts("\nlist2 :");
 	list2->foreach(print);
 	puts("");
+	list2->erase_all(free);
 	delete(list, list);
 	delete(list, list2);
+	free(a);
 }

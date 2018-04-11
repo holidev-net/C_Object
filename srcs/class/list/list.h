@@ -17,7 +17,7 @@ typedef void *(*dup_data_func_t)(void const *);
 
 #ifndef FREE_DATA_FUNC
 #define FREE_DATA_FUNC
-typedef void *(*free_data_func_t)(void const *);
+typedef void (*free_data_func_t)(void *);
 #endif
 
 #ifndef SORT_FUNC
@@ -35,9 +35,9 @@ typedef bool (*egal_comp_func_t)(void const *, void const *);
 typedef void (*foreach_func_t)(void *);
 #endif
 
-#ifndef REMOVEIF_FUNC
-#define REMOVEIF_FUNC
-typedef bool (*removeif_func_t)(void const *);
+#ifndef VALIDATOR_FUNC
+#define VALIDATOR_FUNC
+typedef bool (*validator_func_t)(void const *);
 #endif
 
 #ifdef PRIVATE_LIST
@@ -58,12 +58,14 @@ typedef struct list_elem {
 #endif
 
 typedef struct list {
+	int 	*first;
 	void	(*assign)(size_t n, void *data, unsigned long sizeof_data);
 	void	*(*front)(void);
 	void	*(*back)(void);
 	bool	(*empty)(void);
 	size_t	(*size)(void);
 	void	(*clear)(void);
+	void	(*erase_all)(free_data_func_t);
 	void	(*insert)(size_t at, void *data);
 	void	(*remove)(size_t at);
 	void	(*emplace)(long at, void *data, dup_data_func_t);
@@ -75,7 +77,7 @@ typedef struct list {
 	void	(*emplace_front)(void *data, dup_data_func_t);
 	void	(*pop_front)(void);
 	void	(*merge)(struct list *other, sort_func_t);
-	void	(*remove_if)(removeif_func_t);
+	void	(*remove_if)(validator_func_t);
 	void	(*reverse)(void);
 	void	(*unique)(egal_comp_func_t);
 	void	(*sort)(sort_func_t);
@@ -99,6 +101,7 @@ int	*list_back(list_t*);
 bool	list_empty(list_t *);
 size_t	list_size(list_t *);
 void	list_clear(list_t*);
+void	list_erase_all(free_data_func_t, list_t*);
 void	list_insert_at(long at, void *data, list_t*);
 void	list_remove_at(long at, list_t*);
 void	list_emplace_at(long at, void *data, dup_data_func_t, list_t*);
@@ -110,7 +113,7 @@ void	list_push_front(void *data, list_t*);
 void	list_emplace_front(void *data, dup_data_func_t, list_t*);
 void	list_pop_front(list_t*);
 void	list_merge(list_t *other, sort_func_t, list_t*);
-void	list_remove_if(removeif_func_t func, list_t*);
+void	list_remove_if(validator_func_t func, list_t*);
 void	list_reverse(list_t*);
 void	list_unique(egal_comp_func_t, list_t*);
 void	list_sort(sort_func_t func, list_t*);

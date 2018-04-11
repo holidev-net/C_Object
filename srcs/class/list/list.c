@@ -23,38 +23,75 @@ static elem_t *create_new_elem(void *data)
 	return (elem);
 }
 
-void	list_push_front(void *data, list_t *this)
+static elem_t *remove_elem(elem_t *elem, list_t *this)
 {
-	elem_t *elem = create_new_elem(data);
+	elem_t *to_free = elem;
+	elem_t *next = elem->next ? elem->next : elem->prev;
 
-	if (elem == NULL)
-		abort();
-	if (this->_size == 0) {
-		this->_front = elem;
-		this->_back = elem;
-	} else {
-		this->_front->prev = elem;
-		elem->next = this->_front;
-		this->_front = elem;
-	}
-	++this->_size;
+	--this->_size;
+	if (elem->prev != NULL)
+		elem->prev->next = elem->next;
+	if (elem->next != NULL)
+		elem->next->prev = elem->prev;
+	if (this->_front == elem)
+		this->_front = this->_front->next;
+	if (this->_back == elem)
+		this->_back = this->_back->prev;
+	free(to_free);
+	return (next);
 }
 
-void	list_push_back(void *data, list_t *this)
+void	list_assign(size_t n, void const *data,
+			dup_data_func_t func, list_t *this)
 {
-	elem_t *elem = create_new_elem(data);
+	elem_t *elem;
+	void *dupdata;
 
-	if (elem == NULL)
-		abort();
-	if (this->_size == 0) {
-		this->_front = elem;
-		this->_back = elem;
-	} else {
-		this->_back->next = elem;
-		elem->prev = this->_back;
-		this->_back = elem;
+	for (size_t i = 0; i < n; ++i) {
+		dupdata = func(data);
+		if (dupdata == NULL)
+			abort();
+		elem = create_new_elem(dupdata);
+		list_push_back(elem, this);
 	}
-	++this->_size;
+}
+
+int	*list_front(list_t *this)
+{
+	if (this->_size == 0)
+		abort();
+	return (this->_front->data);
+}
+
+int	*list_back(list_t *this)
+{
+	if (this->_size == 0)
+		abort();
+	return (this->_back->data);
+}
+
+bool	list_empty(list_t *this)
+{
+	return this->_size == 0;
+}
+
+size_t list_size(list_t *this)
+{
+	return this->_size;
+}
+
+void	list_clear(list_t *this)
+{
+	while (this->_size != 0)
+		list_pop_front(this);
+}
+
+void	list_erase_all(free_data_func_t func, list_t *this)
+{
+	while (this->_size != 0) {
+		func(list_front(this));
+		list_pop_front(this);
+	}
 }
 
 void	list_insert_at(long at, void *data, list_t *this)
@@ -91,75 +128,6 @@ void	list_insert_at(long at, void *data, list_t *this)
 	}
 }
 
-void	list_pop_front(list_t *this)
-{
-	elem_t *elem = this->_front;
-
-	if (this->_size == 0)
-		abort();
-	this->_front = this->_front->next;
-	--this->_size;
-	if (this->_size != 0)
-		this->_front->prev = NULL;
-	else
-		this->_back = NULL;
-	free(elem);
-}
-
-void	list_pop_back(list_t *this)
-{
-	elem_t *elem = this->_back;
-
-	if (this->_size == 0)
-		abort();
-	this->_back = this->_back->prev;
-	--this->_size;
-	if (this->_size != 0)
-		this->_back->next = NULL;
-	else
-		this->_front = NULL;
-	free(elem);
-}
-
-int	*list_front(list_t *this)
-{
-	if (this->_size == 0)
-		abort();
-	return (this->_front->data);
-}
-
-int	*list_back(list_t *this)
-{
-	if (this->_size == 0)
-		abort();
-	return (this->_back->data);
-}
-
-size_t list_size(list_t *this)
-{
-	return this->_size;
-}
-
-bool	list_empty(list_t *this)
-{
-	return this->_size == 0;
-}
-
-void	list_assign(size_t n, void const *data,
-			dup_data_func_t func, list_t *this)
-{
-	elem_t *elem;
-	void *dupdata;
-
-	for (size_t i = 0; i < n; ++i) {
-		dupdata = func(data);
-		if (dupdata == NULL)
-			abort();
-		elem = create_new_elem(dupdata);
-		list_push_back(elem, this);
-	}
-}
-
 void	list_remove_at(long at, list_t *this)
 {
 	elem_t *elem = this->_front;
@@ -182,13 +150,32 @@ void	list_remove_at(long at, list_t *this)
 	free(elem);
 }
 
-void	list_emplace_front(void *data, dup_data_func_t func, list_t *this)
+void	list_emplace_at(long at, void *data, dup_data_func_t fnc, list_t *this)
 {
-	void *dupdata = func(data);
+	void *dupdata = fnc(data);
 
 	if (dupdata == NULL)
 		abort();
-	list_push_front(dupdata, this);
+	list_insert_at(at, dupdata, this);
+}
+
+/* void list_erase(long at, free_data_func_t); */
+
+void	list_push_back(void *data, list_t *this)
+{
+	elem_t *elem = create_new_elem(data);
+
+	if (elem == NULL)
+		abort();
+	if (this->_size == 0) {
+		this->_front = elem;
+		this->_back = elem;
+	} else {
+		this->_back->next = elem;
+		elem->prev = this->_back;
+		this->_back = elem;
+	}
+	++this->_size;
 }
 
 void	list_emplace_back(void *data, dup_data_func_t func, list_t *this)
@@ -200,77 +187,88 @@ void	list_emplace_back(void *data, dup_data_func_t func, list_t *this)
 	list_push_back(dupdata, this);
 }
 
-void	list_emplace_at(long at, void *data, dup_data_func_t fnc, list_t *this)
+void	list_pop_back(list_t *this)
 {
-	void *dupdata = fnc(data);
+	elem_t *elem = this->_back;
+
+	if (this->_size == 0)
+		abort();
+	this->_back = this->_back->prev;
+	--this->_size;
+	if (this->_size != 0)
+		this->_back->next = NULL;
+	else
+		this->_front = NULL;
+	free(elem);
+}
+
+void	list_push_front(void *data, list_t *this)
+{
+	elem_t *elem = create_new_elem(data);
+
+	if (elem == NULL)
+		abort();
+	if (this->_size == 0) {
+		this->_front = elem;
+		this->_back = elem;
+	} else {
+		this->_front->prev = elem;
+		elem->next = this->_front;
+		this->_front = elem;
+	}
+	++this->_size;
+}
+
+void	list_emplace_front(void *data, dup_data_func_t func, list_t *this)
+{
+	void *dupdata = func(data);
 
 	if (dupdata == NULL)
 		abort();
-	list_insert_at(at, dupdata, this);
+	list_push_front(dupdata, this);
 }
 
-void	list_clear(list_t *this)
+void	list_pop_front(list_t *this)
 {
-	while (this->_size != 0)
-		list_pop_front(this);
-}
+	elem_t *elem = this->_front;
 
-void	list_foreach(foreach_func_t func, list_t *this)
-{
-	for (elem_t *elem = this->_front; elem != NULL; elem = NEXT(elem))
-		func(elem->data);
-}
-
-static elem_t *remove_elem(elem_t *elem, list_t *this)
-{
-	elem_t *to_free = elem;
-	elem_t *next = elem->next ? elem->next : elem->prev;
-
+	if (this->_size == 0)
+		abort();
+	this->_front = this->_front->next;
 	--this->_size;
-	if (elem->prev != NULL)
-		elem->prev->next = elem->next;
-	if (elem->next != NULL)
-		elem->next->prev = elem->prev;
-	if (this->_front == elem)
-		this->_front = this->_front->next;
-	if (this->_back == elem)
-		this->_back = this->_back->prev;
-	free(to_free);
-	return (next);
+	if (this->_size != 0)
+		this->_front->prev = NULL;
+	else
+		this->_back = NULL;
+	free(elem);
 }
 
-void	list_remove_if(removeif_func_t func, list_t *this)
+void	list_merge(list_t *other, sort_func_t func, list_t *this)
+{
+	size_t i = 0;
+	elem_t *elem = this->_front;
+
+	while (other->_size != 0) {
+		if (elem == NULL ||
+		func(other->_front->data, elem->data) == true) {
+			list_insert_at(i, other->_front->data, this);
+			list_pop_front(other);
+		} else {
+			elem = NEXT(elem);
+		}
+		++i;
+	}
+}
+
+void	list_remove_if(validator_func_t func, list_t *this)
 {
 	elem_t *elem = this->_front;
 
 	while (elem != NULL) {
 		if (func(elem->data) == true)
-			elem = remove_elem(elem, this);
+		elem = remove_elem(elem, this);
 		else
-			elem = NEXT(elem);
-	}
-}
-
-void	list_sort(sort_func_t func, list_t *this)
-{
-	elem_t	*elem = NULL;
-	bool	sorted = false;
-	void	*swap;
-
-	if (this->_size <= 1)
-		return;
-	while (sorted == false) {
-		sorted = true;
-		elem = this->_front;
-		while (elem->next != NULL) {
-			if (func(elem->data, elem->next->data) == false) {
-				swap = elem->data;
-				elem->data = elem->next->data;
-				elem->next->data = swap;
-				sorted = false;
-			}
-			elem = NEXT(elem);
-		}
+		elem = NEXT(elem);
 	}
 }
 
@@ -309,21 +307,33 @@ void	list_unique(egal_comp_func_t func, list_t *this)
 	}
 }
 
-void	list_merge(list_t *other, sort_func_t func, list_t *this)
+void	list_sort(sort_func_t func, list_t *this)
 {
-	size_t i = 0;
-	elem_t *elem = this->_front;
+	elem_t	*elem = NULL;
+	bool	sorted = false;
+	void	*swap;
 
-	while (other->_size != 0) {
-		if (elem == NULL ||
-		func(other->_front->data, elem->data) == true) {
-			list_insert_at(i, other->_front->data, this);
-			list_pop_front(other);
-		} else {
+	if (this->_size <= 1)
+		return;
+	while (sorted == false) {
+		sorted = true;
+		elem = this->_front;
+		while (elem->next != NULL) {
+			if (func(elem->data, elem->next->data) == false) {
+				swap = elem->data;
+				elem->data = elem->next->data;
+				elem->next->data = swap;
+				sorted = false;
+			}
 			elem = NEXT(elem);
 		}
-		++i;
 	}
+}
+
+void	list_foreach(foreach_func_t func, list_t *this)
+{
+	for (elem_t *elem = this->_front; elem != NULL; elem = NEXT(elem))
+		func(elem->data);
 }
 
 list_t	*init_list(void)
@@ -335,13 +345,14 @@ list_t	*init_list(void)
 	obj->_size = 0;
 	obj->_front = NULL;
 	obj->_back = NULL;
-	init_members(obj, 22,
+	init_members(obj, 23,
 		CREATE_WRAP(obj, assign, &list_assign, 3),
 		CREATE_WRAP(obj, front, &list_front, 0),
 		CREATE_WRAP(obj, back, &list_back, 0),
 		CREATE_WRAP(obj, empty, &list_empty, 0),
 		CREATE_WRAP(obj, size, &list_size, 0),
 		CREATE_WRAP(obj, clear, &list_clear, 0),
+		CREATE_WRAP(obj, erase_all, &list_erase_all, 1),
 		CREATE_WRAP(obj, insert, &list_insert_at, 2),
 		CREATE_WRAP(obj, remove, &list_remove_at, 1),
 		CREATE_WRAP(obj, emplace, &list_emplace_at, 3),
@@ -365,6 +376,6 @@ list_t	*init_list(void)
 void	delete_list(list_t *obj)
 {
 	list_clear(obj);
-	delete_members(obj->push_front);
+	delete_members(obj->assign);
 	free(obj);
 }
