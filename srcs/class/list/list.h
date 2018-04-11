@@ -59,7 +59,7 @@ typedef struct list_elem {
 
 typedef struct list {
 	int 	*first;
-	void	(*assign)(size_t n, void *data, unsigned long sizeof_data);
+	void	(*assign)(size_t n, void *data, dup_data_func_t);
 	void	*(*front)(void);
 	void	*(*back)(void);
 	bool	(*empty)(void);

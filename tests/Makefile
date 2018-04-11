@@ -1,4 +1,4 @@
-SRCS	=	main2.c
+SRCS	=	test_list.c
 
 all:
 	make -C .. re
