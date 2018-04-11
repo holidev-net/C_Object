@@ -7,7 +7,7 @@
 
 CC		=	gcc
 
-CFLAGS		=	-W -Wall -Wextra -fPIC -O2 -I ./includes/
+CFLAGS		=	-W -Wall -Wextra -g -fPIC -O2 -I ./includes/
 
 SRCS		=	init_member.c			\
 			class/list/list.c		\
