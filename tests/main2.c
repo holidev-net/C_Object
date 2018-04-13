@@ -6,20 +6,66 @@
 */
 
 #include <stdio.h>
-#include "class/test.h"
-#include <stdio.h>
-#include "class/mystring.h"
-#include "class/stream.h"
+#include <stdlib.h>
+#include "list.h"
+#include "str.h"
+#include "stream.h"
 #include "init.h"
+
+void print(void *data)
+{
+	printf("%d ", *(int*)data);
+}
+
+void double_var(void *data)
+{
+	*(int*)data += *(int*)data;
+}
+void double_var_plus_one(void *data)
+{
+	*(int*)data += *(int*)data + 1;
+}
+
+bool sort(int a, int b)
+{
+	return a < b;
+}
+
+bool egal(int a, int b)
+{
+	return a == b;
+}
+
+void *alloc_int(void const *i)
+{
+	int *data = malloc(sizeof(int));
+
+	*data = *(int*)i;
+	return (data);
+}
 
 int main()
 {
-	stream_t *_stdout = new(stream);
-	stream_t *_stderr = new(stream, stderr);
+	list_t *list = new(list);
+	list_t *list2 = new(list);
+	int *a = malloc(sizeof(int));
 
-	_stdout->str("stdout: ")->i(42)->str(" char")->endl();
-	_stderr->str("stderr: ")->i(42)->str(" char")->endl();
+	*a = 2;
 
-	delete(stream, _stdout);
-	delete(stream, _stderr);
+	for (int i = 0; i < 10; ++i) {
+		list->push_back(a);
+		list2->emplace_back(&i, alloc_int);
+	}
+	list->foreach(double_var);
+	list2->foreach(double_var);
+
+	puts("\nlist1 :");
+	list->foreach(print);
+	puts("\nlist2 :");
+	list2->foreach(print);
+	puts("");
+	list2->erase_all(free);
+	delete(list, list);
+	delete(list, list2);
+	free(a);
 }
