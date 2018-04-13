@@ -56,6 +56,7 @@ typedef struct list_elem {
 	struct list_elem 	*prev;
 	struct list_elem 	*next;
 }	elem_t;
+elem_t *create_new_elem(void *data);
 #endif
 
 typedef struct list {
@@ -69,13 +70,14 @@ typedef struct list {
 	void	(*insert)(size_t at, void *data);
 	void	(*remove)(size_t at);
 	void	(*emplace)(long at, void *data);
-	void	(*erase)(long at);
 	void	(*push_back)(void *data);
 	void	(*emplace_back)(void *data);
 	void	(*pop_back)(void);
 	void	(*push_front)(void *data);
 	void	(*emplace_front)(void *data);
 	void	(*pop_front)(void);
+	void	(*rotate)(void);
+	void	(*rrotate)(void);
 	void	(*merge)(struct list *other, sort_func_t);
 	void	(*remove_if)(validator_func_t);
 	void	(*reverse)(void);
@@ -108,9 +110,11 @@ void		delete_list(list_t *);
 
 #ifdef PRIVATE_LIST
 
-void throw_list(char const *msg)__attribute__((nonnull));
-void throw_list_elem(int n);
+void	throw_list(char const *msg)__attribute__((nonnull));
+void	throw_list_elem(int n);
 
+void	push_elem_front(elem_t *elem, list_t *);
+void	push_elem_back(elem_t *elem, list_t *);
 
 void	list_assign(size_t n, void const *data, list_t *);
 int	*list_front(list_t *);
@@ -121,13 +125,14 @@ void	list_clear(list_t *);
 void	list_insert(long at, void *data, list_t *);
 void	list_remove(long at, list_t *);
 void	list_emplace(long at, void *data, list_t *);
-/* void list_erase(long at, list*); */
 void	list_push_back(void *data, list_t *);
 void	list_emplace_back(void *data, list_t *);
 void	list_pop_back(list_t *);
 void	list_push_front(void *data, list_t *);
 void	list_emplace_front(void *data, list_t *);
 void	list_pop_front(list_t *);
+void	list_rotate(list_t *);
+void	list_rrotate(list_t *);
 void	list_merge(list_t *other, sort_func_t, list_t *);
 void	list_remove_if(validator_func_t func, list_t *);
 void	list_reverse(list_t *);

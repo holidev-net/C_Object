@@ -11,6 +11,12 @@ CFLAGS		=	-W -Wall -Wextra -g -fPIC -O2 -I ./includes/
 
 SRCS		=	init_member.c			\
 			class/list/list.c		\
+			class/list/list1.c		\
+			class/list/list2.c		\
+			class/list/list3.c		\
+			class/list/list4.c		\
+			class/list/list5.c		\
+			class/list/list6.c		\
 			class/list/list_errors.c	\
 			class/string/string.c		\
 			class/stream/stream.c		\

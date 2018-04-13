@@ -1,5 +1,6 @@
 {
-        "files.associations": {
-                "stdarg.h": "c"
-        }
+	"files.associations": {
+		"stdarg.h": "c",
+		"stdlib.h": "c"
+	}
 }

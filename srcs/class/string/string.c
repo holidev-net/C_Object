@@ -61,7 +61,7 @@ char *back(string_t *this)
 	return (&this->_str[this->_size - 1]);
 }
 
-string_t	*init_string()
+string_t	*init_string(void)
 {
 	string_t *obj = malloc(sizeof(string_t));
 

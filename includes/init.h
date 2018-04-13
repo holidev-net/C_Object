@@ -9,7 +9,7 @@
 
 #include <unistd.h>
 
-#define __APPROVED(name)
+#define __APPROVED_BY(name)
 
 #define CREATE_WRAP(o, s, t, n) ((init_wrap_t){(void *) &((o)->s), t, n})
 
