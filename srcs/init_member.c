@@ -13,25 +13,25 @@
 
 #define ALIGN   16
 
+/* rdi rsi rdx rcx r8 r9 r10 r11 rax rbx */
 static const short _asmmov_g[] = {
-	0xbf48, // rdi
-	0xbe48, // rsi
-	0xba48, // rdx
-	0xb948, // rcx
-	0xb849, // r8
-	0xb949, // r9
-	0xba49, // r10
-	0xbb49, // r11
-	0xb848, // rax
-	0xbb48, // rbx
+	0xbf48, 0xbe48, 0xba48, 0xb948, 0xb849,
+	0xb949, 0xba49, 0xbb49, 0xb848, 0xbb48
 };
 
+/* template caller :
+	move rax
+	addr of func
+	mov last arg
+	addr obj
+	jmp rax
+*/
 static const unsigned char  _caller_template_g[] = {
-	0x48, 0xb8, // mov rax
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // addr of func
-	0x00, 0x00, // mov last arg
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, // addr obj
-	0xff, 0xe0, // jmp rax
+	0x48, 0xb8,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0xff, 0xe0
 };
 
 static const size_t  _alignedSize_g =
@@ -44,7 +44,7 @@ static inline int init_member_write_member_callers(
 	init_wrap_t     cur_wrapper;
 	void		*cur = caller_address + ALIGN;
 
-	*((size_t*) caller_address) = _alignedSize_g + ALIGN;
+	*((size_t *) caller_address) = _alignedSize_g + ALIGN;
 	while (nb_functs--) {
 		cur_wrapper = va_arg(vl, init_wrap_t);
 		memcpy(cur, _caller_template_g, sizeof(_caller_template_g));
@@ -65,7 +65,7 @@ int init_members(void *obj, int nb_functs, ...)
 			PROT_READ | PROT_WRITE,
 			MAP_ANONYMOUS | MAP_PRIVATE, 0, 0);
 
-	if (caller_address == (void*) -1)
+	if (caller_address == (void *) -1)
 		return (-1);
 	va_start(vl, nb_functs);
 	return (init_member_write_member_callers(
@@ -74,5 +74,5 @@ int init_members(void *obj, int nb_functs, ...)
 
 void delete_members(void *first_member)
 {
-	munmap(first_member, *((size_t*) (first_member - ALIGN)));
+	munmap(first_member, *((size_t *) (first_member - ALIGN)));
 }

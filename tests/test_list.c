@@ -11,6 +11,13 @@
 #include "list.h"
 #include "init.h"
 
+typedef struct {
+	int i;
+	void *ptr;
+}	test_struct_t;
+
+test_struct_t test_struct = {42, NULL};
+
 void test_get()
 {
 	list_t *list = new(list);
@@ -31,36 +38,76 @@ void test_get()
 	delete(list, list);
 }
 
-static void *dupdata(void const *data)
+static void *dupdata(test_struct_t const *data)
 {
-	int *ndata = malloc(sizeof(int));
+	test_struct_t *ndata = malloc(sizeof(*ndata));
 
-	*ndata = *(int*)data;
+	ndata->i = data->i;
+	ndata->ptr = malloc(100);
 	return (ndata);
+}
+
+static void freedata(test_struct_t *data)
+{
+	free(data->ptr);
+	free(data);
+}
+
+static void print(test_struct_t *data)
+{
+	printf("%d\n", data->i);
 }
 
 void test_assign()
 {
-	list_t *list = new(list);
-	int a = 42;
+	list_t *list = new(list, (dup_data_func_t)dupdata, (free_data_func_t)freedata);
 
-	list->assign(10, &a, dupdata);
+	list->assign(10, &test_struct);
 	delete(list, list);
 }
+
 void test_clear()
 {
-	list_t *list = new(list);
+	list_t *list = new(list, (dup_data_func_t)dupdata, (free_data_func_t)freedata);
 
-
+	list->assign(10, &test_struct);
+	for (int i = 0; i < 5; ++i)
+		list->push_front(&test_struct);
+	list->clear();
 	delete(list, list);
 }
+
 void test_at()
 {
-	list_t *list = new(list);
+	const test_struct_t final[] = {{42, 0}, {42, 0}, {0, 0}, {2, 0}, {4, 0},
+					{1, 0}, {3, 0}, {5, 0},	{6, 0}, {7, 0}};
+	list_t *list = new(list, (dup_data_func_t)dupdata, (free_data_func_t)freedata);
+	test_struct_t st = {0, NULL};
 
-
+	for (int i = 0; i < 10; ++i) {
+		st.i = i;
+		list->emplace_back(&st);
+	}	
+	for (int i = -5; i < 5; ++i) {
+		st.i = i;
+		list->emplace(i, &st);
+	}
+	st.i = 42;
+	for (int i = -5; i < 5; ++i) {
+		list->insert(i, &st);
+	}
+	for (int i = -10; i < 10; ++i) {
+		list->remove(i);
+	}
+	int i = 0;
+	while (list->empty() == false) {
+		assert(((test_struct_t*)list->front())->i == final[i].i);
+		list->pop_front();
+		i++;
+	}
 	delete(list, list);
 }
+
 void test_push()
 {
 	list_t *list = new(list);
@@ -68,6 +115,7 @@ void test_push()
 
 	delete(list, list);
 }
+
 void test_merge()
 {
 	list_t *list = new(list);
@@ -75,6 +123,7 @@ void test_merge()
 
 	delete(list, list);
 }
+
 void test_removeif()
 {
 	list_t *list = new(list);
@@ -82,6 +131,7 @@ void test_removeif()
 
 	delete(list, list);
 }
+
 void test_unique()
 {
 	list_t *list = new(list);
@@ -89,6 +139,7 @@ void test_unique()
 
 	delete(list, list);
 }
+
 void test_sort()
 {
 	list_t *list = new(list);
@@ -96,6 +147,7 @@ void test_sort()
 
 	delete(list, list);
 }
+
 void test_foreach()
 {
 	list_t *list = new(list);
@@ -116,3 +168,5 @@ int main()
 	test_sort();
 	test_foreach();
 }
+
+

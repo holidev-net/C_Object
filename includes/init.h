@@ -9,7 +9,9 @@
 
 #include <unistd.h>
 
-#define CREATE_WRAP(o, s, t, n) ((init_wrap_t){(void*) &((o)->s), t, n})
+#define __APPROVED(name)
+
+#define CREATE_WRAP(o, s, t, n) ((init_wrap_t){(void *) &((o)->s), t, n})
 
 typedef struct
 {

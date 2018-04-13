@@ -71,7 +71,7 @@ void stream_ctor(stream_t *obj)
 		);
 }
 
-stream_t	*init_stream0()
+stream_t	*init_stream0(void)
 {
 	stream_t *obj = malloc(sizeof(stream_t));
 

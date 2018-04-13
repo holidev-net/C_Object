@@ -52,29 +52,29 @@ typedef bool (*validator_func_t)(void const *);
 
 typedef struct list_elem {
 	void			*data;
-	struct list_elem	*prev;
-	struct list_elem	*next;
+	bool			alloced;
+	struct list_elem 	*prev;
+	struct list_elem 	*next;
 }	elem_t;
 #endif
 
 typedef struct list {
 	int 	*first;
-	void	(*assign)(size_t n, void *data, dup_data_func_t);
+	void	(*assign)(size_t n, void *data);
 	void	*(*front)(void);
 	void	*(*back)(void);
 	bool	(*empty)(void);
 	size_t	(*size)(void);
 	void	(*clear)(void);
-	void	(*erase_all)(free_data_func_t);
 	void	(*insert)(size_t at, void *data);
 	void	(*remove)(size_t at);
-	void	(*emplace)(long at, void *data, dup_data_func_t);
-	void	(*erase)(long at, free_data_func_t);
+	void	(*emplace)(long at, void *data);
+	void	(*erase)(long at);
 	void	(*push_back)(void *data);
-	void	(*emplace_back)(void *data, dup_data_func_t);
+	void	(*emplace_back)(void *data);
 	void	(*pop_back)(void);
 	void	(*push_front)(void *data);
-	void	(*emplace_front)(void *data, dup_data_func_t);
+	void	(*emplace_front)(void *data);
 	void	(*pop_front)(void);
 	void	(*merge)(struct list *other, sort_func_t);
 	void	(*remove_if)(validator_func_t);
@@ -84,38 +84,54 @@ typedef struct list {
 	void	(*foreach)(foreach_func_t);
 
 	#ifdef PRIVATE_LIST
-	elem_t	*_front;
-	elem_t	*_back;
-	size_t	_size;
+	dup_data_func_t		_dup_data;
+	free_data_func_t 	_free_data;
+	elem_t			*_front;
+	elem_t			*_back;
+	size_t			_size;
 	#endif
 }	list_t;
 
-list_t		*init_list(void);
+#define __DEF_ARG2 NULL
+#define __DEF_ARG1 NULL
+
+#define __NONULL(x) (x + 0)
+#define __GET_DEF_ARG2(x) (__NONULL(x) ? x : __DEF_ARG2)
+#define __GET_DEF_ARG1(x) (__NONULL(x) ? x : __DEF_ARG1)
+#define ARG2(x, unused...) 	__GET_DEF_ARG2(x)
+#define ARG1(x, args...) 	__GET_DEF_ARG1(x), ARG2(args)
+#define init_list(x, args...) 	__init_list(ARG1(x, args))
+
+
+list_t		*__init_list(dup_data_func_t, free_data_func_t);
 void		delete_list(list_t *);
 
 #ifdef PRIVATE_LIST
 
-void	list_assign(size_t n, void const *data, dup_data_func_t dup, list_t *);
-int	*list_front(list_t*);
-int	*list_back(list_t*);
+void throw_list(char const *msg)__attribute__((nonnull));
+void throw_list_elem(int n);
+
+
+void	list_assign(size_t n, void const *data, list_t *);
+int	*list_front(list_t *);
+int	*list_back(list_t *);
 bool	list_empty(list_t *);
 size_t	list_size(list_t *);
-void	list_clear(list_t*);
-void	list_erase_all(free_data_func_t, list_t*);
-void	list_insert_at(long at, void *data, list_t*);
-void	list_remove_at(long at, list_t*);
-void	list_emplace_at(long at, void *data, dup_data_func_t, list_t*);
-/* void list_erase(long at, free_data_func_t); */
-void	list_push_back(void *data, list_t*);
-void	list_emplace_back(void *data, dup_data_func_t, list_t*);
-void	list_pop_back(list_t*);
-void	list_push_front(void *data, list_t*);
-void	list_emplace_front(void *data, dup_data_func_t, list_t*);
-void	list_pop_front(list_t*);
-void	list_merge(list_t *other, sort_func_t, list_t*);
-void	list_remove_if(validator_func_t func, list_t*);
-void	list_reverse(list_t*);
-void	list_unique(egal_comp_func_t, list_t*);
-void	list_sort(sort_func_t func, list_t*);
-void	list_foreach(foreach_func_t func, list_t*);
+void	list_clear(list_t *);
+void	list_insert(long at, void *data, list_t *);
+void	list_remove(long at, list_t *);
+void	list_emplace(long at, void *data, list_t *);
+/* void list_erase(long at, list*); */
+void	list_push_back(void *data, list_t *);
+void	list_emplace_back(void *data, list_t *);
+void	list_pop_back(list_t *);
+void	list_push_front(void *data, list_t *);
+void	list_emplace_front(void *data, list_t *);
+void	list_pop_front(list_t *);
+void	list_merge(list_t *other, sort_func_t, list_t *);
+void	list_remove_if(validator_func_t func, list_t *);
+void	list_reverse(list_t *);
+void	list_unique(egal_comp_func_t, list_t *);
+void	list_sort(sort_func_t func, list_t *);
+void	list_foreach(foreach_func_t func, list_t *);
 #endif
