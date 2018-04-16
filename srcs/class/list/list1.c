@@ -31,6 +31,7 @@ void	list_assign(size_t n, void const *data, list_t *this)
 	elem_t *elem;
 	void *dupdata;
 
+	list_clear(this);
 	if (this->_dup_data == NULL)
 		throw_list("dup function not assigned");
 	for (size_t i = 0; i < n; ++i) {

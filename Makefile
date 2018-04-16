@@ -18,6 +18,7 @@ SRCS		=	init_member.c			\
 			class/list/list5.c		\
 			class/list/list6.c		\
 			class/list/list_errors.c	\
+			class/vector/vector.c		\
 			class/string/string.c		\
 			class/stream/stream.c		\
 

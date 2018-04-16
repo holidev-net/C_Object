@@ -60,7 +60,6 @@ elem_t *create_new_elem(void *data);
 #endif
 
 typedef struct list {
-	int 	*first;
 	void	(*assign)(size_t n, void *data);
 	void	*(*front)(void);
 	void	*(*back)(void);
@@ -94,22 +93,19 @@ typedef struct list {
 	#endif
 }	list_t;
 
-#define __DEF_ARG2 NULL
-#define __DEF_ARG1 NULL
+#define __LIST_DEF_ARG2 NULL
+#define __LIST_DEF_ARG1 NULL
 
-#define __NONULL(x) (x + 0)
-#define __GET_DEF_ARG2(x) (__NONULL(x) ? x : __DEF_ARG2)
-#define __GET_DEF_ARG1(x) (__NONULL(x) ? x : __DEF_ARG1)
-#define ARG2(x, unused...) 	__GET_DEF_ARG2(x)
-#define ARG1(x, args...) 	__GET_DEF_ARG1(x), ARG2(args)
-#define init_list(x, args...) 	__init_list(ARG1(x, args))
-
+#define __LIST_GET_DEF_ARG2(x) (__NONULL(x) ? x : __LIST_DEF_ARG2)
+#define __LIST_GET_DEF_ARG1(x) (__NONULL(x) ? x : __LIST_DEF_ARG1)
+#define LIST_ARG2(x, unused...) 	__LIST_GET_DEF_ARG2(x)
+#define LIST_ARG1(x, args...) 	__LIST_GET_DEF_ARG1(x), LIST_ARG2(args)
+#define init_list(x, args...) 	__init_list(LIST_ARG1(x, args))
 
 list_t		*__init_list(dup_data_func_t, free_data_func_t);
 void		delete_list(list_t *);
 
 #ifdef PRIVATE_LIST
-
 void	throw_list(char const *msg)__attribute__((nonnull));
 void	throw_list_elem(int n);
 

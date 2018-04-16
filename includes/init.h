@@ -13,6 +13,8 @@
 
 #define CREATE_WRAP(o, s, t, n) ((init_wrap_t){(void *) &((o)->s), t, n})
 
+#define __NONULL(x) (x + 0)
+
 typedef struct
 {
 	void    **funct;

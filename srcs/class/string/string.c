@@ -5,13 +5,13 @@
 ** description
 */
 
-#define PRIVATE_STRING
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "str.h"
+
 #include "init.h"
+#define PRIVATE_STRING
+#include "str.h"
 
 void assign(const char *str, string_t *this)
 {
