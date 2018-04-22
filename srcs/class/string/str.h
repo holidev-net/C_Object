@@ -26,7 +26,7 @@ typedef struct string {
 } string_t;
 
 string_t	*init_string();
-void		delete_string(string_t *);
+void		delete_string(string_t **);
 
 #ifdef PRIVATE_STRING
 void	assign(const char *str, string_t *);

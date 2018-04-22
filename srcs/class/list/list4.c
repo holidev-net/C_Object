@@ -52,7 +52,7 @@ void	list_pop_back(list_t *this)
 	elem_t *elem = this->_back;
 
 	if (this->_size == 0)
-		throw_list("array is empty");
+		throw_list("list is empty");
 	this->_back = this->_back->prev;
 	--this->_size;
 	if (this->_size != 0)
@@ -70,7 +70,7 @@ void	list_pop_front(list_t *this)
 	elem_t *elem = this->_front;
 
 	if (this->_size == 0)
-		throw_list("array is empty");
+		throw_list("list is empty");
 	this->_front = this->_front->next;
 	--this->_size;
 	if (this->_size != 0)
