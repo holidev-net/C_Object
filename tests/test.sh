@@ -1,3 +1,3 @@
 #!/bin/bash
 
-make && ./a.out
+make -C tests && ./tests/a.out
