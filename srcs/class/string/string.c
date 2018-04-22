@@ -5,21 +5,21 @@
 ** description
 */
 
-#define PRIVATE_STRING
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "mystring.h"
+
 #include "init.h"
+#define PRIVATE_STRING
+#include "str.h"
 
 void assign(const char *str, string_t *this)
 {
-	if (this->_str != NULL) {
-		free(this->_str);
-	}
+	free(this->_str);
 	this->_str = strdup(str);
-	this->_size = (this->_str != NULL ? strlen(this->_str) : 0);
+	if (this->_str == NULL)
+		abort();
+	this->_size = strlen(this->_str);
 }
 
 size_t length(string_t *this)
@@ -29,11 +29,11 @@ size_t length(string_t *this)
 
 void clear(string_t *this)
 {
-	if (this->_str != NULL) {
-		free(this->_str);
-		this->_str = NULL;
-		this->_size = 0;
-	}
+	free(this->_str);
+	this->_str = strdup("");
+	if (this->_str == NULL)
+		abort();
+	this->_size = 0;
 }
 
 bool empty(string_t *this)
@@ -41,39 +41,36 @@ bool empty(string_t *this)
 	return (this->_size == 0);
 }
 
-char *at(size_t i, string_t *this)
+char *at(long i, string_t *this)
 {
-	if (i < this->_size) {
+	if (i < 0)
+		i = this->_size - i;
+	if (i >= 0 && i < (long)this->_size) {
 		return (&this->_str[i]);
 	}
-	return (NULL);
+	abort();
 }
 
 char *front(string_t *this)
 {
-	if (this->_size != 0) {
-		return (&this->_str[0]);
-	}
-	return (NULL);
+	return (&this->_str[0]);
 }
 
 char *back(string_t *this)
 {
-	if (this->_size != 0) {
-		return (&this->_str[this->_size - 1]);
-	}
-	return (NULL);
+	return (&this->_str[this->_size - 1]);
 }
 
-string_t	*init_string()
+string_t	*init_string(void)
 {
 	string_t *obj = malloc(sizeof(string_t));
 
-	if (obj == NULL) {
-		return (NULL);
-	}
+	if (obj == NULL)
+		abort();
 	obj->_size = 0;
-	obj->_str = NULL;
+	obj->_str = strdup("");
+	if (obj->_str == NULL)
+		abort();
 	init_members(obj, 7,
 		CREATE_WRAP(obj, assign, &assign, 1),
 		CREATE_WRAP(obj, length, &length, 0),
@@ -85,9 +82,11 @@ string_t	*init_string()
 	return (obj);
 }
 
-void		delete_string(string_t *obj)
+void		delete_string(string_t **obj)
 {
-	obj->clear();
-	delete_members(obj->assign);
-	free(obj);
+	if (*obj == NULL)
+		return;
+	free((*obj)->_str);
+	delete_members((*obj)->assign);
+	free(*obj);
 }

@@ -15,7 +15,7 @@ typedef struct string {
 	size_t	(*length)();
 	void	(*clear)();
 	bool	(*empty)();
-	char	*(*at)(size_t);
+	char	*(*at)(long);
 	char	*(*front)();
 	char	*(*back)();
 
@@ -26,14 +26,14 @@ typedef struct string {
 } string_t;
 
 string_t	*init_string();
-void		delete_string(string_t *);
+void		delete_string(string_t **);
 
 #ifdef PRIVATE_STRING
 void	assign(const char *str, string_t *);
 size_t	length(string_t *);
 void	clear(string_t *);
 bool	empty(string_t *);
-char	*at(size_t, string_t *);
+char	*at(long, string_t *);
 char	*front(string_t *);
 char	*back(string_t *);
 #endif
