@@ -26,7 +26,7 @@ typedef struct stream {
 void		stream_ctor(stream_t *);
 stream_t	*init_stream0();
 stream_t	*init_stream1(FILE *file);
-void		delete_stream(stream_t *);
+void		delete_stream(stream_t **);
 
 #define STREAM0	init_stream0
 #define STREAM1	init_stream1

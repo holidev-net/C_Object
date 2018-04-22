@@ -53,9 +53,11 @@ list_t	*__init_list(dup_data_func_t dup_func, free_data_func_t free_func)
 }
 
 __APPROVED_BY(Alexandre)
-void	delete_list(list_t *obj)
+void	delete_list(list_t **obj)
 {
-	list_clear(obj);
-	delete_members(obj->assign);
-	free(obj);
+	if (*obj == NULL)
+		return;
+	list_clear(*obj);
+	delete_members((*obj)->assign);
+	free(*obj);
 }

@@ -94,8 +94,10 @@ stream_t	*init_stream1(FILE *file)
 	return (obj);
 }
 
-void		delete_stream(stream_t *obj)
+void		delete_stream(stream_t **obj)
 {
-	delete_members(obj->str);
-	free(obj);
+	if (*obj == NULL)
+		return;
+	delete_members((*obj)->str);
+	free(*obj);
 }

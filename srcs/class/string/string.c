@@ -82,10 +82,11 @@ string_t	*init_string(void)
 	return (obj);
 }
 
-void		delete_string(string_t *obj)
+void		delete_string(string_t **obj)
 {
-	obj->clear();
-	free(obj->_str);
-	delete_members(obj->assign);
-	free(obj);
+	if (*obj == NULL)
+		return;
+	free((*obj)->_str);
+	delete_members((*obj)->assign);
+	free(*obj);
 }

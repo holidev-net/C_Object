@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "init.h"
 
 #ifndef DUP_DATA_FUNC
 #define DUP_DATA_FUNC
@@ -38,8 +39,6 @@ typedef struct {
 	void	(*erase)(long);
 	void	(*swap)(long ,long);
 	void	(*clear)(void);
-	void	(*emplace)(long, void *);
-	void	(*emplace_back)(void *);
 	#ifdef PRIVATE_VECTOR
 	dup_data_func_t		_dup_data;
 	free_data_func_t 	_free_data;
@@ -59,9 +58,15 @@ typedef struct {
 #define init_vector(x, args...)	__init_vector(VEC_ARG1(x, args))
 
 vector_t	*__init_vector(dup_data_func_t, free_data_func_t);
-void		delete_vector(vector_t *);
+void		delete_vector(vector_t **);
 
 #ifdef PRIVATE_VECTOR
+void	throw_vector(char const *msg)__attribute__((nonnull));
+void	throw_vector_elem(int n)__attribute__((nonnull));
+
+void insert_elem(size_t i, void *data, vector_t *);
+void remove_elem(size_t i, vector_t *);
+
 size_t	vector_size(vector_t *);
 void	vector_resize(size_t n, void *data, vector_t *);
 size_t	vector_capacity(vector_t *);
@@ -78,6 +83,4 @@ void	vector_insert(long at, void *data, vector_t *);
 void	vector_erase(long at, vector_t *);
 void	vector_swap(long it1, long it2, vector_t *);
 void	vector_clear(vector_t *);
-void	vector_emplace(long at, void *data, vector_t *);
-void	vector_emplace_back(void *data, vector_t *);
 #endif

@@ -16,7 +16,7 @@ __APPROVED_BY(Alexandre)
 int	*list_front(list_t *this)
 {
 	if (this->_size == 0)
-		throw_list("array is empty");
+		throw_list("list is empty");
 	return (this->_front->data);
 }
 
@@ -24,7 +24,7 @@ __APPROVED_BY(Alexandre)
 int	*list_back(list_t *this)
 {
 	if (this->_size == 0)
-		throw_list("array is empty");
+		throw_list("list is empty");
 	return (this->_back->data);
 }
 

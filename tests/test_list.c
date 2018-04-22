@@ -137,6 +137,7 @@ void test_unique()
 	list_t *list = new(list);
 
 
+
 	delete(list, list);
 }
 
@@ -156,6 +157,19 @@ void test_foreach()
 	delete(list, list);
 }
 
+void clean_list(list_t **list)
+{
+	printf("clean ! \n");
+	delete(list, *list);
+}
+
+void test_cleanup()
+{
+	__CLEAN(list) list_t *list = new(list);
+
+	list->push_front(NULL);
+}
+
 int main()
 {
 	test_get();
@@ -167,6 +181,5 @@ int main()
 	test_unique();
 	test_sort();
 	test_foreach();
+	test_cleanup();
 }
-
-

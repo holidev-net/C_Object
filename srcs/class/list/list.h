@@ -103,7 +103,7 @@ typedef struct list {
 #define init_list(x, args...) 	__init_list(LIST_ARG1(x, args))
 
 list_t		*__init_list(dup_data_func_t, free_data_func_t);
-void		delete_list(list_t *);
+void		delete_list(list_t **);
 
 #ifdef PRIVATE_LIST
 void	throw_list(char const *msg)__attribute__((nonnull));
