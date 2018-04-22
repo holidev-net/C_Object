@@ -49,11 +49,7 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
             },
-<<<<<<< HEAD
-            "compilerPath": "/usr/bin/clang",
-=======
             "compilerPath": "/usr/bin/gcc",
->>>>>>> 98252abcdba6a789197877945d473685b3457ed8
             "cStandard": "c11",
             "cppStandard": "c++17"
         },
