@@ -11,6 +11,7 @@
 #include <stdbool.h>
 
 #include "init.h"
+#include "vector_it.h"
 
 #ifndef DUP_DATA_FUNC
 #define DUP_DATA_FUNC
@@ -22,7 +23,7 @@ typedef void *(*dup_data_func_t)(void const *);
 typedef void (*free_data_func_t)(void *);
 #endif
 
-typedef struct {
+CLASS vector {
 	size_t	(*size)(void);
 	void	(*resize)(size_t, void *);
 	size_t	(*capacity)(void);

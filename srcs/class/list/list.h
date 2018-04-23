@@ -10,6 +10,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "init.h"
+#include "list_it.h"
+
 #ifndef DUP_DATA_FUNC
 #define DUP_DATA_FUNC
 typedef void *(*dup_data_func_t)(void const *);

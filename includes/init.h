@@ -31,6 +31,6 @@ typedef struct {
 int	init_members(void *obj, int nb_funct, ...);
 void	delete_members(void *first_member);
 
-#define delete(type, obj)	delete_##type(&obj);
-#define new(type, ...)		init_##type(__VA_ARGS__);
+#define delete(type, obj)	delete_##type(&obj)
+#define new(type, ...)		init_##type(__VA_ARGS__)
 #define cast(obj, obj2)		obj##_to_##obj2

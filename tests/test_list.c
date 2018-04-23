@@ -110,51 +110,32 @@ void test_at()
 
 void test_push()
 {
-	list_t *list = new(list);
-
-
-	delete(list, list);
+	__CLEAN(list) list_t *list = new(list);
 }
 
 void test_merge()
 {
-	list_t *list = new(list);
-
-
-	delete(list, list);
+	__CLEAN(list) list_t *list = new(list);
 }
 
 void test_removeif()
 {
-	list_t *list = new(list);
-
-
-	delete(list, list);
+	__CLEAN(list) list_t *list = new(list);
 }
 
 void test_unique()
 {
-	list_t *list = new(list);
-
-
-
-	delete(list, list);
+	__CLEAN(list) list_t *list = new(list);
 }
 
 void test_sort()
 {
-	list_t *list = new(list);
-
-
-	delete(list, list);
+	__CLEAN(list) list_t *list = new(list);
 }
 
 void test_foreach()
 {
-	list_t *list = new(list);
-
-
-	delete(list, list);
+	__CLEAN(list) list_t *list = new(list);
 }
 
 void clean_list(list_t **list)
@@ -170,6 +151,19 @@ void test_cleanup()
 	list->push_front(NULL);
 }
 
+#define ITER(n, t, c) __CLEAN(it)it_t *n = new(t##_it, c); !n->is_end(); n->next()
+
+void test_iterator()
+{
+	__CLEAN(list) list_t *list = new(list);
+
+	for (long i = 0; i < 10; ++i)
+		list->push_back((void *)i + 1);
+	for (ITER(it, list, list)) {
+		printf("%ld\n", (long)it->get());
+	}
+}
+
 int main()
 {
 	test_get();
@@ -182,4 +176,5 @@ int main()
 	test_sort();
 	test_foreach();
 	test_cleanup();
+	test_iterator();
 }
