@@ -59,7 +59,7 @@ typedef struct list_elem {
 elem_t *create_new_elem(void *data);
 #endif
 
-typedef struct list {
+CLASS list {
 	void	(*assign)(size_t n, void *data);
 	void	*(*front)(void);
 	void	*(*back)(void);

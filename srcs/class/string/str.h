@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct string {
+CLASS {
 	void	(*assign)(const char *);
 	size_t	(*length)();
 	void	(*clear)();

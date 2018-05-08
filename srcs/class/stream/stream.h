@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-typedef struct stream {
+CLASS stream {
 	struct stream *(*str)(char *str);
 	struct stream *(*c)(char);
 	struct stream *(*i)(int);

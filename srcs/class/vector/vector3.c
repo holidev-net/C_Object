@@ -50,7 +50,7 @@ void	vector_insert(long at, void *data, vector_t *this)
 		vector_reserve(this->_capacity * 2, this);
 	if (at != (long)this->_size)
 		memmove(this->_datas + at + 1, this->_datas + at,
-			sizeof(void*) * (this->_size - at));
+			sizeof(void *) * (this->_size - at));
 	insert_elem(at, data, this);
 	++this->_size;
 }
