@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "init.h"
-#define PRIVATE_LIST
+#include "private_list.h"
 #include "list.h"
 
 __APPROVED_BY(Alexandre)
@@ -39,7 +39,6 @@ void push_elem_back(elem_t *elem, list_t *this)
 	}
 	++this->_size;
 }
-
 
 __APPROVED_BY(Alexandre)
 void	list_emplace_back(void *data, list_t *this)

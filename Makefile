@@ -24,8 +24,11 @@ SRCS		=	init_member.c			\
 			class/vector/vector3.c		\
 			class/vector/vector4.c		\
 			class/vector/vector_errors.c	\
-			class/string/string.c		\
+			class/string/my_string1.c	\
+			class/string/my_string2.c	\
 			class/stream/stream.c		\
+			class/stream/stream1.c		\
+			class/stream/stream2.c		\
 
 OBJS		=	$(addprefix objs/, $(SRCS:.c=.o))
 

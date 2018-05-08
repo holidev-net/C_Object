@@ -11,8 +11,6 @@
 #include <stdarg.h>
 #include "init.h"
 
-#define ALIGN   16
-
 /* rdi rsi rdx rcx r8 r9 r10 r11 rax rbx */
 static const short _asmmov_g[] = {
 	0xbf48, 0xbe48, 0xba48, 0xb948, 0xb849,
@@ -35,13 +33,13 @@ static const unsigned char  _caller_template_g[] = {
 };
 
 static const size_t  _alignedSize_g =
-				sizeof(_caller_template_g) / 16 * 16 +
-				!!(sizeof(_caller_template_g) % 16) * 16;
+				sizeof(_caller_template_g) / ALIGN * ALIGN +
+				!!(sizeof(_caller_template_g) % ALIGN) * ALIGN;
 
 static inline int init_member_write_member_callers(
 	void *obj, va_list vl, void *caller_address, int nb_functs)
 {
-	init_wrap_t     cur_wrapper;
+	init_wrap_t	cur_wrapper;
 	void		*cur = caller_address + ALIGN;
 
 	*((size_t *) caller_address) = _alignedSize_g + ALIGN;

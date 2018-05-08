@@ -12,6 +12,12 @@
 
 #define __APPROVED_BY(name)
 
+#define ALIGN   16
+
+#ifndef OFFSETOF
+#define OFFSETOF(type, member) ((type *(0))->member)
+#endif
+
 #define CLASS		typedef struct
 
 #define CREATE_WRAP(o, s, t, n)	((init_wrap_t){(void *) &((o)->s), t, n})

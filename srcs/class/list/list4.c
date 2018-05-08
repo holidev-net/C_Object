@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "init.h"
-#define PRIVATE_LIST
+#include "private_list.h"
 #include "list.h"
 
 __APPROVED_BY(Alexandre)
@@ -106,4 +106,3 @@ void	list_remove(long at, list_t *this)
 		this->_free_data(elem->data);
 	free(elem);
 }
-

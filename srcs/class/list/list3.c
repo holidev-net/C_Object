@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "init.h"
-#define PRIVATE_LIST
+#include "private_list.h"
 #include "list.h"
 
 __APPROVED_BY(Alexandre)
