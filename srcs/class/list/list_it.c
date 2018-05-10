@@ -63,7 +63,7 @@ it_t	*init_list_it(void *list)
 	else
 		obj->_elem = NULL;
 	obj->_list = list;
-	obj->destr = (void *) delete_list_it;
+	obj->destr = (void *)delete_list_it;
 	init_members(obj, 6,
 		CREATE_WRAP(obj, prev, &list_it_prev, 0),
 		CREATE_WRAP(obj, next, &list_it_next, 0),

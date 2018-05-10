@@ -15,12 +15,12 @@ const char	*event_get_name(event_t *this)
 	return (this->_name);
 }
 
-void		event_add_event(event_type_t func, event_t *this)
+void	event_add_event(event_type_t func, event_t *this)
 {
 	this->_events->push_back(func);
 }
 
-void		event_fire(event_t *this, ...)
+void	event_fire(event_t *this, ...)
 {
 	va_list ap;
 	void *tmp[4];
@@ -28,12 +28,10 @@ void		event_fire(event_t *this, ...)
 	va_start(ap, this);
 	for (int i = 0; i < 4; ++i)
 		tmp[i] = va_arg(ap, void *);
-	va_end(ap);
 	for (ITER(it, list_it, this->_events)) {
-	// for (size_t i = 0; i < this->_events->size(); ++i) {
 		((event_type_t)it->get())(tmp[0], tmp[1], tmp[2], tmp[3]);
 	}
-	// func(tmp[0], tmp[1], tmp[2], tmp[3]);
+	va_end(ap);
 }
 
 event_t	*init_event(const char *name)
@@ -49,7 +47,6 @@ event_t	*init_event(const char *name)
 	init_members(obj, 2, 
 		CREATE_WRAP(obj, get_name, &event_get_name, 0),
 		CREATE_WRAP(obj, add_event, &event_add_event, 1)
-		// CREATE_WRAP(obj, event_fire, &event_fire, 1)
 	);
 	obj->fire = event_fire;
 	return (obj);
@@ -61,5 +58,5 @@ void	delete_event(event_t **obj)
 		return;
 	delete(list, (*obj)->_events);
 	free((*obj)->_name);
-	free(obj);
+	free((*obj));
 }

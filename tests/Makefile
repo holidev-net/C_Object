@@ -6,16 +6,16 @@ EVENT	=	test_event.c
 
 all:
 	make -C .. re
-	gcc -I ../includes/ $(SRCS) -O3 -L.. -lstatic_cobject -g
+	gcc -g  -I../includes/ $(SRCS) -O3 -L.. -lstatic_cobject
 
 test:
-	gcc -I ../includes/ $(SRCS) -O3 -L.. -lstatic_cobject -g
+	gcc -g  -I../includes/ $(SRCS) -O3 -L.. -lstatic_cobject
 
 list:
-	gcc -I ../includes/ $(LIST) -O3 -L.. -lstatic_cobject -g
+	gcc -g  -I../includes/ $(LIST) -O3 -L.. -lstatic_cobject
 
 vector:
-	gcc -I ../includes/ $(VECTOR) -O3 -L.. -lstatic_cobject -g
+	gcc -g  -I../includes/ $(VECTOR) -O3 -L.. -lstatic_cobject
 
 event:
-	gcc -I ../includes/ $(EVENT) -O3 -L.. -lstatic_cobject -g
+	gcc -g  -I../includes/ $(EVENT) -O3 -L.. -lstatic_cobject

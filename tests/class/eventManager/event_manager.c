@@ -22,6 +22,7 @@ void fire2(int n, ...)
 	for (int i = 0; i < 4; ++i)
 		tmp[i] = va_arg(ap, void *);
 	va_end(ap);
+	// printf("%lx %lx %lx\n", tmp[0], tmp[1], tmp[2]);
 	func(tmp[0], tmp[1], tmp[2], tmp[3]);
 }
 
@@ -73,5 +74,5 @@ int main()
 	// fire(42.42, 43.43, 44.44);
 
 	struct a aa = {._fire = fire2};
-	aa.fire(42.42, 43.43, 44.44);
+	aa.fire(1.1, 2.2, 3.3);
 }
