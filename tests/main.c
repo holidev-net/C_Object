@@ -34,5 +34,5 @@ void _test(char *s1, char *s2, char *s3, ...)
 
 int main()
 {
-	test("bla", "oui");
+	printf("%d\n", b);
 }

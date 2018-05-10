@@ -24,7 +24,9 @@ void	vector_assign(size_t n, void *data, vector_t *this)
 __APPROVED_BY(Alexandre)
 void	vector_push_back(void *data, vector_t *this)
 {
-	if (this->_size == this->_capacity)
+	if (this->_capacity == 0)
+		vector_reserve(1, this);
+	else if (this->_size == this->_capacity)
 		vector_reserve(this->_capacity * 2, this);
 	insert_elem(this->_size, data, this);
 	++this->_size;
@@ -46,7 +48,9 @@ void	vector_insert(long at, void *data, vector_t *this)
 		at = this->_size + at + 1;
 	if (at < 0 || at > (long)this->_size)
 		throw_vector_elem(at);
-	if (this->_size == this->_capacity)
+	if (this->_capacity == 0)
+		vector_reserve(1, this);
+	else if (this->_size == this->_capacity)
 		vector_reserve(this->_capacity * 2, this);
 	if (at != (long)this->_size)
 		memmove(this->_datas + at + 1, this->_datas + at,

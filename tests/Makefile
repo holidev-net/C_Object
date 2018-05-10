@@ -2,6 +2,7 @@ SRCS	=	test_vector.c
 
 LIST	=	test_list.c
 VECTOR	=	test_vector.c
+EVENT	=	test_event.c
 
 all:
 	make -C .. re
@@ -15,3 +16,6 @@ list:
 
 vector:
 	gcc -I ../includes/ $(VECTOR) -O3 -L.. -lstatic_cobject -g
+
+event:
+	gcc -I ../includes/ $(EVENT) -O3 -L.. -lstatic_cobject -g
