@@ -10,6 +10,8 @@ CC		=	gcc
 CFLAGS		=	-W -Wall -Wextra -g -fPIC -O2 -I ./includes/
 
 SRCS		=	init_member.c			\
+			alloc_amd64.c			\
+			alloc_common.c			\
 			class/list/list.c		\
 			class/list/list1.c		\
 			class/list/list2.c		\
