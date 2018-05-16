@@ -1,19 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "cobject.h"
-
-#define LAMBDA(ret, body) ({ret __lbd__ body __lbd__;})
-#define MAKE_CAP(name, body) struct cap_s body *name = malloc(sizeof(*name))
-#define LAMBDA_CAP(name) struct cap_s *name
+#include "lambda.h"
 
 typedef int (*add_fct)(int);
-
-void	free_lambda(void *lbd)
-{
-	free(get_capture(lbd));
-	free_caller(lbd);
-}
 
 add_fct	add(int a)
 {
