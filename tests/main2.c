@@ -10,7 +10,7 @@
 #include "list.h"
 #include "str.h"
 #include "stream.h"
-#include "init.h"
+#include "cobject.h"
 
 void print(void *data)
 {

@@ -74,6 +74,21 @@ void	delete_vector(vector_t **obj)
 		return;
 	(*obj)->clear();
 	free((*obj)->_datas);
-	delete_members((*obj)->size);
+	free_caller((*obj)->size);
+	free_caller((*obj)->resize);
+	free_caller((*obj)->capacity);
+	free_caller((*obj)->empty);
+	free_caller((*obj)->reserve);
+	free_caller((*obj)->shrink_to_fit);
+	free_caller((*obj)->at);
+	free_caller((*obj)->front);
+	free_caller((*obj)->back);
+	free_caller((*obj)->assign);
+	free_caller((*obj)->push_back);
+	free_caller((*obj)->pop_back);
+	free_caller((*obj)->insert);
+	free_caller((*obj)->erase);
+	free_caller((*obj)->swap);
+	free_caller((*obj)->clear);
 	free(*obj);
 }
