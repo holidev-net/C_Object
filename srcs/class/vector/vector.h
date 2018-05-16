@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-#include "init.h"
+#include "cobject.h"
 
 #ifndef DUP_DATA_FUNC
 #define DUP_DATA_FUNC

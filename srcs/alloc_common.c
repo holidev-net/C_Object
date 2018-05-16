@@ -91,6 +91,9 @@ void	free_caller(void *caller)
 			page->prev->next = page->next;
 		if (page->next)
 			page->next->prev = page->prev;
+		if (page == last_page_g) {
+			last_page_g = page->prev;
+		}
 		free(page);
 	}
 }

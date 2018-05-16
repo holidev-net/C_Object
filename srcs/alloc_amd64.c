@@ -55,4 +55,9 @@ void	*create_caller(void *data_ptr, void *function_ptr, int arg_nbr)
 	return (caller_block);
 }
 
+void	*get_capture(void *caller)
+{
+	return *((void **) (caller + 12));
+}
+
 #endif

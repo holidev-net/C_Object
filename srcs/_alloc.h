@@ -47,6 +47,7 @@ static inline void	*_get_caller_block(_page_header_t *page)
 		return (NULL);
 	for (int j = 7; j >= 0; j--) {
 		if (byte & 0x1) {
+			page->buf[i] |= 1 << (7 - j);
 			return (_get_caller_at(page, i * 8 + j));
 		}
 		byte = byte >> 1;
