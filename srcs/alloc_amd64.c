@@ -47,11 +47,13 @@ void	*create_caller(void *data_ptr, void *function_ptr, int arg_nbr)
 
 	if (caller_block == NULL)
 		return (caller_block);
+	memset(caller_block, 0, _alignedSize_g);
 	memcpy(caller_block, _caller_template_g, sizeof(_caller_template_g));
 	*((void **) (caller_block + 2)) = function_ptr;
 	*((short *) (caller_block + 10)) = _asmmov_g[arg_nbr];
 	*((void **) (caller_block + 12)) = data_ptr;
 	page->available--;
+
 	return (caller_block);
 }
 

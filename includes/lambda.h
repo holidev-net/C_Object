@@ -13,18 +13,18 @@
 #include <stdlib.h>
 #include "cobject.h"
 
-#define LAMBDA(ret, body) ({ret __lbd__ body __lbd__;})
-#define MAKE_CAP(name, body) struct cap_s body *name = malloc(sizeof(*name))
-#define LAMBDA_CAP(name) struct cap_s *name
+#define _1(a, ...) a
+#define _2(a, b, ...) b
+#define _3(a, b, c, ...) c
+#define _4(a, b, c, d, ...) d
+
+#define GET_NARG(_0, _1, _2, _3, _4, NB, ...) NB
+#define COUNT_AV(...) GET_NARG(_0, ##__VA_ARGS__, 4, 3, 2, 1, 0)
+
+#define BODY(...) GET_NARG(__VA_ARGS__)
+
+#define LBD_0(ret, body) ({ret __lbd__ body __lbd__;})
+
 #define LAMBDA_CLEANUP	__attribute__((cleanup(__free_lamdba)))
 
-void	free_lambda(void *lbd)
-{
-	free(get_capture(lbd));
-	free_caller(lbd);
-}
-
-void	__free_lamdba(void *lbd)
-{
-	free_lambda(*((void**) lbd));
-}
+#include "lambda.t"
