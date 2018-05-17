@@ -16,9 +16,15 @@
 #define LAMBDA(ret, body) ({ret __lbd__ body __lbd__;})
 #define MAKE_CAP(name, body) struct cap_s body *name = malloc(sizeof(*name))
 #define LAMBDA_CAP(name) struct cap_s *name
+#define LAMBDA_CLEANUP	__attribute__((cleanup(__free_lamdba)))
 
 void	free_lambda(void *lbd)
 {
 	free(get_capture(lbd));
 	free_caller(lbd);
+}
+
+void	__free_lamdba(void *lbd)
+{
+	free_lambda(*((void**) lbd));
 }

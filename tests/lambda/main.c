@@ -18,13 +18,10 @@ add_fct	add(int a)
 
 int main()
 {
-	int (*ah)(int) = add(10);
-	int (*ahh)(int) = add(12);	
+	int (*ah)(int) LAMBDA_CLEANUP = add(10);
+	int (*ahh)(int) LAMBDA_CLEANUP = add(12);	
 
-	printf("res = %d\n", add(10)(50));
+	printf("res = %d\n", ah(50));
 	printf("res = %d\n", ahh(53));
-
-	free_lambda(ah);
-	free_lambda(ahh);
 	return (0);
 }
