@@ -84,7 +84,7 @@ void	free_caller(void *caller)
 	int		x = idx / 8;
 	int		y = idx % 8;
 
-	page->buf[x] |= (0x1 << y);
+	page->buf[x] &= ~(0x1 << y);
 	page->available++;
 	if (page->available == _total_available_caller_g) {
 		if (page->prev)
