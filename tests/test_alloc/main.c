@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdint.h>
 #include "cobject.h"
+#include "vector.h"
 
 struct test_s {
 	int a;
@@ -12,26 +14,25 @@ int fct(int a, struct test_s *b)
 	printf("%d\n", a + b->a);
 }
 
-#define N 25000
+#define N 64000
 
 int main()
 {
-	struct test_s b;
-	void	*tmp[N];
-	int	idxs[N];
+	vector_t	*tmp[N];
+	int		idxs[N];
 
 	srand(time(NULL));
-	b.a = 32;
 	for (int i = 0; i < N; i++) {
-		tmp[i] = create_caller(&b, &fct, 1);
+		tmp[i] = new(vector);
+		tmp[i]->assign(10, (void*) ((intptr_t) i));
 		idxs[i] = i;
 	}
 	for (int i = 0; i < N; i++) {
 		idxs[i] = idxs[rand() % N];
-		printf("%d\n", idxs[i]);
+		printf("%lu\n", (intptr_t) tmp[idxs[i]]->front());
 	}
 	for (int i = 0; i < N; i++) {
-		free_caller(tmp[i]);
+		delete_vector(&(tmp[i]));
 	}
 	return (0);
 }
