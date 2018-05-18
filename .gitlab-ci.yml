@@ -1,28 +1,19 @@
-# use the official gcc image, based on debian
-# can use verions as well, like gcc:5.2
-# see https://hub.docker.com/_/gcc/
-image: gcc
+image: epitechcontent/epitest-docker
 
-before_script:
-  - apt update && apt -y install make autoconf
 build:
   stage: build
-  # instead of calling g++ directly you can also use some build toolkit like make
-  # install the necessary build tools when needed
-  # before_script: 
-  #   - apt update && apt -y install make autoconf 
-  script: 
-    - make
-  # artifacts:
-  #   paths:
-  #     - mybinary
-  # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-  # cache:
-  #   paths:
-  #     - "*.o"
+  script:
+    - make -j 4
+  artifacts:
+      paths:
+        - ./*.a
+        - ./*.so
 
-# run tests using the binary built before
+# need some tests scripts :3
 test:
   stage: test
   script:
-    - ./tests/test.sh
+    - ./tests/gitlab_ci_test.sh
+  dependencies:
+    - build
+
