@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "init.h"
+#include "cobject.h"
 #define PRIVATE_STREAM
 #include "stream.h"
 
@@ -98,6 +98,12 @@ void		delete_stream(stream_t **obj)
 {
 	if (*obj == NULL)
 		return;
-	delete_members((*obj)->str);
+	free_caller((*obj)->str);
+	free_caller((*obj)->c);
+	free_caller((*obj)->i);
+	free_caller((*obj)->ld);
+	free_caller((*obj)->endl);
+	free_caller((*obj)->flush);
+	free_caller((*obj)->src);
 	free(*obj);
 }
