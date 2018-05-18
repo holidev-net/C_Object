@@ -34,6 +34,7 @@ static inline void	*_get_caller_block(_page_header_t *page)
 {
 	uint8_t	byte = 0;
 	int	i = 0;
+	int	av = 7;
 
 	if (!page)
 		return (NULL);
@@ -45,9 +46,12 @@ static inline void	*_get_caller_block(_page_header_t *page)
 	}
 	if (i == _total_available_caller_g)
 		return (NULL);
-	for (int j = 7; j >= 0; j--) {
+	if (i * 8 + av > _total_available_caller_g) {
+		av -= _total_available_caller_g % 8;
+	}
+	for (int j = av; j >= 0; j--) {
 		if (byte & 0x1) {
-			page->buf[i] |= 1 << (7 - j);
+			page->buf[i] |= 1 << (av - j);
 			return (_get_caller_at(page, i * 8 + j));
 		}
 		byte = byte >> 1;

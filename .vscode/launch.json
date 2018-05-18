@@ -13,6 +13,14 @@
 			"cwd": "${workspaceFolder}"
 		},
 		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "(lldb) Launch Tests Lambda",
+			"program": "${workspaceFolder}/tests/lambda/a.out",
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		},
+		{
 			"name": "(gdb) Launch Test lambda",
 			"type": "cppdbg",
 			"request": "launch",
