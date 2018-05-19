@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "init.h"
+#include "cobject.h"
 #include "private_string.h"
 #include "str.h"
 
@@ -48,6 +48,12 @@ void		delete_string(string_t **obj)
 {
 	(*obj)->clear();
 	free((*obj)->_str);
-	delete_members((*obj)->assign);
+	free_caller((*obj)->assign);
+	free_caller((*obj)->length);
+	free_caller((*obj)->clear);
+	free_caller((*obj)->empty);
+	free_caller((*obj)->at);
+	free_caller((*obj)->front);
+	free_caller((*obj)->back);
 	free(*obj);
 }

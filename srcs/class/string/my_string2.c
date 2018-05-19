@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "init.h"
+#include "cobject.h"
 #include "private_string.h"
 #include "str.h"
 

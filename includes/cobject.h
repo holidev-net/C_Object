@@ -35,7 +35,9 @@ typedef struct {
 }	init_wrap_t;
 
 int	init_members(void *obj, int nb_funct, ...);
-void	delete_members(void *first_member);
+void	*create_caller(void *data_ptr, void *funcion_ptr, int arg_nbr);
+void	*get_capture(void *caller);
+void	free_caller(void *caller);
 
 #define delete(type, obj)	delete_##type(&obj)
 #define new(type, ...)		init_##type(__VA_ARGS__)

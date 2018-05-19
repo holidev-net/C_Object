@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "init.h"
+#include "cobject.h"
 #include "private_list.h"
 #include "list.h"
 
@@ -88,6 +88,28 @@ void	delete_list(list_t **obj)
 	if (*obj == NULL)
 		return;
 	list_clear(*obj);
-	delete_members((*obj)->assign);
+	free_caller((*obj)->assign);
+	free_caller((*obj)->front);
+	free_caller((*obj)->back);
+	free_caller((*obj)->empty);
+	free_caller((*obj)->size);
+	free_caller((*obj)->clear);
+	free_caller((*obj)->insert);
+	free_caller((*obj)->remove);
+	free_caller((*obj)->emplace);
+	free_caller((*obj)->push_back);
+	free_caller((*obj)->emplace_back);
+	free_caller((*obj)->pop_back);
+	free_caller((*obj)->push_front);
+	free_caller((*obj)->emplace_front);
+	free_caller((*obj)->pop_front);
+	free_caller((*obj)->rotate);
+	free_caller((*obj)->rrotate);
+	free_caller((*obj)->merge);
+	free_caller((*obj)->remove_if);
+	free_caller((*obj)->reverse);
+	free_caller((*obj)->unique);
+	free_caller((*obj)->sort);
+	free_caller((*obj)->foreach);
 	free(*obj);
 }

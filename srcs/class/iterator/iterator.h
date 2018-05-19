@@ -8,7 +8,7 @@
 #pragma once
 
 #include <stdbool.h>
-#include "init.h"
+#include "cobject.h"
 
 /*	This class is a pure virtual class.
 	His member functions must be define by the heredity. */

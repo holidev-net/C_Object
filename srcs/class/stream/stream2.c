@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-#include "init.h"
+#include "cobject.h"
 #include "private_stream.h"
 #include "stream.h"
 

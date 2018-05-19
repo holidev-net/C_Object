@@ -12,7 +12,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "test.h"
-#include "init.h"
+#include "cobject.h"
 
 void print(struct testObj *this)
 {

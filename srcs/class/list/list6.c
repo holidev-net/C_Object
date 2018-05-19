@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "init.h"
+#include "cobject.h"
 #include "private_list.h"
 #include "list.h"
 

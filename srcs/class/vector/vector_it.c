@@ -71,6 +71,11 @@ void	delete_vec_it(vec_it_t **obj)
 {
 	if (*obj == NULL)
 		return;
-	delete_members((*obj)->prev);
+	free_caller((*obj)->prev);
+	free_caller((*obj)->next);
+	free_caller((*obj)->move);
+	free_caller((*obj)->is_start);
+	free_caller((*obj)->is_end);
+	free_caller((*obj)->get);
 	free(*obj);
 }

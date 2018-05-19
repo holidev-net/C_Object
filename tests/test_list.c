@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "list.h"
-#include "init.h"
+#include "cobject.h"
 
 typedef struct {
 	int i;

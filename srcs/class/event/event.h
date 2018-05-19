@@ -9,7 +9,7 @@
 
 #include <stdarg.h>
 
-#include "init.h"
+#include "cobject.h"
 #include "list.h"
 
 typedef void (*event_type_t)();
