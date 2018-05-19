@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "cobject.h"
-#define PRIVATE_LIST
+#include "private_list.h"
 #include "list.h"
 
 __APPROVED_BY(Alexandre)
@@ -23,7 +23,6 @@ elem_t *create_new_elem(void *data)
 	elem->data = data;
 	return (elem);
 }
-
 
 __APPROVED_BY(Alexandre)
 void	list_assign(size_t n, void const *data, list_t *this)

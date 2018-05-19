@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-typedef struct string {
+CLASS {
 	void	(*assign)(const char *);
 	size_t	(*length)();
 	void	(*clear)();
@@ -19,7 +19,7 @@ typedef struct string {
 	char	*(*front)();
 	char	*(*back)();
 
-	#ifdef PRIVATE_STRING
+	#ifdef __PRIVATE_STRING__
 	size_t	_size;
 	char	*_str;
 	#endif
@@ -28,7 +28,7 @@ typedef struct string {
 string_t	*init_string();
 void		delete_string(string_t **);
 
-#ifdef PRIVATE_STRING
+#ifdef __PRIVATE_STRING__
 void	assign(const char *str, string_t *);
 size_t	length(string_t *);
 void	clear(string_t *);

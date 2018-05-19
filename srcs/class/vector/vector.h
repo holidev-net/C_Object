@@ -10,6 +10,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "vector_it.h"
 #include "cobject.h"
 
 #ifndef DUP_DATA_FUNC
@@ -22,7 +23,7 @@ typedef void *(*dup_data_func_t)(void const *);
 typedef void (*free_data_func_t)(void *);
 #endif
 
-typedef struct {
+CLASS vector {
 	size_t	(*size)(void);
 	void	(*resize)(size_t, void *);
 	size_t	(*capacity)(void);
@@ -37,7 +38,7 @@ typedef struct {
 	void	(*pop_back)(void);
 	void	(*insert)(long, void *);
 	void	(*erase)(long);
-	void	(*swap)(long ,long);
+	void	(*swap)(long, long);
 	void	(*clear)(void);
 	#ifdef PRIVATE_VECTOR
 	dup_data_func_t		_dup_data;

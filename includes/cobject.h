@@ -12,6 +12,12 @@
 
 #define __APPROVED_BY(name)
 
+#define ALIGN   16
+
+#ifndef OFFSETOF
+#define OFFSETOF(type, member) ((type *(0))->member)
+#endif
+
 #define CLASS		typedef struct
 
 #define CREATE_WRAP(o, s, t, n)	((init_wrap_t){(void *) &((o)->s), t, n})
@@ -33,6 +39,6 @@ void	*create_caller(void *data_ptr, void *funcion_ptr, int arg_nbr);
 void	*get_capture(void *caller);
 void	free_caller(void *caller);
 
-#define delete(type, obj)	delete_##type(&obj);
-#define new(type, ...)		init_##type(__VA_ARGS__);
+#define delete(type, obj)	delete_##type(&obj)
+#define new(type, ...)		init_##type(__VA_ARGS__)
 #define cast(obj, obj2)		obj##_to_##obj2

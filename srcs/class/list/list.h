@@ -10,6 +10,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "cobject.h"
+#include "list_it.h"
+
 #ifndef DUP_DATA_FUNC
 #define DUP_DATA_FUNC
 typedef void *(*dup_data_func_t)(void const *);
@@ -40,7 +43,7 @@ typedef void (*foreach_func_t)(void *);
 typedef bool (*validator_func_t)(void const *);
 #endif
 
-#ifdef PRIVATE_LIST
+#ifdef __PRIVATE_LIST__
 #ifdef NEXT
 #undef NEXT
 #endif
@@ -59,7 +62,7 @@ typedef struct list_elem {
 elem_t *create_new_elem(void *data);
 #endif
 
-typedef struct list {
+CLASS list {
 	void	(*assign)(size_t n, void *data);
 	void	*(*front)(void);
 	void	*(*back)(void);
@@ -84,7 +87,7 @@ typedef struct list {
 	void	(*sort)(sort_func_t);
 	void	(*foreach)(foreach_func_t);
 
-	#ifdef PRIVATE_LIST
+	#ifdef __PRIVATE_LIST__
 	dup_data_func_t		_dup_data;
 	free_data_func_t 	_free_data;
 	elem_t			*_front;
@@ -98,14 +101,14 @@ typedef struct list {
 
 #define __LIST_GET_DEF_ARG2(x) (__NONULL(x) ? x : __LIST_DEF_ARG2)
 #define __LIST_GET_DEF_ARG1(x) (__NONULL(x) ? x : __LIST_DEF_ARG1)
-#define LIST_ARG2(x, unused...) 	__LIST_GET_DEF_ARG2(x)
-#define LIST_ARG1(x, args...) 	__LIST_GET_DEF_ARG1(x), LIST_ARG2(args)
-#define init_list(x, args...) 	__init_list(LIST_ARG1(x, args))
+#define LIST_ARG2(x, unused...)	__LIST_GET_DEF_ARG2(x)
+#define LIST_ARG1(x, args...)	__LIST_GET_DEF_ARG1(x), LIST_ARG2(args)
+#define init_list(x, args...)	init_list_f(LIST_ARG1(x, args))
 
-list_t		*__init_list(dup_data_func_t, free_data_func_t);
+list_t		*init_list_f(dup_data_func_t, free_data_func_t);
 void		delete_list(list_t **);
 
-#ifdef PRIVATE_LIST
+#ifdef __PRIVATE_LIST__
 void	throw_list(char const *msg)__attribute__((nonnull));
 void	throw_list_elem(int n);
 

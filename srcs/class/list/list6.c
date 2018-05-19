@@ -9,7 +9,7 @@
 #include <stdlib.h>
 
 #include "cobject.h"
-#define PRIVATE_LIST
+#include "private_list.h"
 #include "list.h"
 
 __APPROVED_BY(Alexandre)
@@ -96,4 +96,3 @@ void	list_foreach(foreach_func_t func, list_t *this)
 	for (elem_t *elem = this->_front; elem != NULL; elem = NEXT(elem))
 		func(elem->data);
 }
-

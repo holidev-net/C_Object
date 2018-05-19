@@ -127,9 +127,24 @@ void test_insert()
 	assert(((test_struct_t *)vector->back())->i == 9);
 }
 
+#define ITER(n, t, c) __CLEAN(it)it_t *n = new(t, c); !n->is_end(); n->next()
+
+void test_iterator()
+{
+	__CLEAN(vector) vector_t *vec = new(vector);
+
+	for (size_t i = 0; i < 10; ++i) {
+		vec->push_back((void*)i);
+	}
+	for (ITER(it, vec_it, vec)) {
+		printf("%ld\n", (long)it->get());
+	}
+}
+
 int main()
 {
 	test_alloc();
 	test_assign();
 	test_insert();
+	test_iterator();
 }

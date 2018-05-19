@@ -19,15 +19,23 @@ SRCS		=	init_member.c			\
 			class/list/list4.c		\
 			class/list/list5.c		\
 			class/list/list6.c		\
+			class/list/list_it.c		\
 			class/list/list_errors.c	\
 			class/vector/vector.c		\
 			class/vector/vector1.c		\
 			class/vector/vector2.c		\
 			class/vector/vector3.c		\
 			class/vector/vector4.c		\
+			class/vector/vector_it.c	\
 			class/vector/vector_errors.c	\
-			class/string/string.c		\
+			class/string/my_string1.c	\
+			class/string/my_string2.c	\
 			class/stream/stream.c		\
+			class/stream/stream1.c		\
+			class/stream/stream2.c		\
+			class/iterator/iterator.c	\
+			class/event/event.c		\
+			class/event/event_error.c	\
 
 OBJS		=	$(addprefix objs/, $(SRCS:.c=.o))
 

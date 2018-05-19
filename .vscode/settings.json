@@ -1,5 +1,6 @@
 {
 	"files.associations": {
+		"*.tpp": "cpp",
 		"stdarg.h": "c",
 		"stdlib.h": "c",
 		"str.h": "c",
@@ -36,6 +37,11 @@
 		"system_error": "cpp",
 		"tuple": "cpp",
 		"typeinfo": "cpp",
-		"string.h": "c"
+		"string.h": "c",
+		"private_string.h": "c",
+		"private_list.h": "c",
+		"init.h": "c",
+		"list.h": "c",
+		"cobject.h": "c"
 	}
 }

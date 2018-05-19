@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 
-typedef struct stream {
+CLASS stream {
 	struct stream *(*str)(char *str);
 	struct stream *(*c)(char);
 	struct stream *(*i)(int);
@@ -18,7 +18,7 @@ typedef struct stream {
 	FILE *(*src)(FILE*);
 	void (*flush)();
 
-	#ifdef PRIVATE_STREAM
+	#ifdef __PRIVATE_STREAM__
 	FILE *stream;
 	#endif
 }	stream_t;
@@ -34,12 +34,12 @@ void		delete_stream(stream_t **);
 #define ctor_stream(_0, _1, FUNC, ...) FUNC
 #define init_stream(arg...) ctor_stream(_0, ##arg, STREAM1, STREAM0)(arg)
 
-
-#ifdef PRIVATE_STREAM
+#ifdef __PRIVATE_STREAM__
 stream_t *write_str(char *str, stream_t *);
 stream_t *write_c(char c, stream_t *);
 stream_t *write_i(int i, stream_t *);
 stream_t *write_ld(long l, stream_t *);
 stream_t *write_endl(stream_t *);
 void flush(stream_t *);
+FILE *write_src(FILE *target, stream_t *);
 #endif
