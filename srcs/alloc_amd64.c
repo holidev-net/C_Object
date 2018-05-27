@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
-#include "_alloc.h"
+#include "internal_alloc.h"
 
 #ifdef __amd64__
 

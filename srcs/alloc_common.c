@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <malloc.h>
-#include "_alloc.h"
+#include "internal_alloc.h"
 
 static _page_header_t	*last_page_g = NULL;
 static size_t		page_size_g;
