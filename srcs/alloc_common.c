@@ -14,9 +14,9 @@
 
 static _page_header_t	*last_page_g = NULL;
 static size_t		page_size_g;
-uint16_t		_total_available_caller_g = 0;
+uint16_t		_total_available_caller_g;
 
-static inline int	_init_header_block(void *page)
+static inline int	alloc_init_header_block(void *page)
 {
 	size_t		available = page_size_g / _alignedSize_g;
 	_page_header_t	*h = page;
@@ -31,7 +31,8 @@ static inline int	_init_header_block(void *page)
 		PROT_READ | PROT_WRITE | PROT_EXEC));
 }
 
-static inline _page_header_t	*_get_page_with_available_caller_block(void)
+static inline _page_header_t	*alloc_get_page_with_available_caller_block
+									(void)
 {
 	for (_page_header_t *page = last_page_g; page != NULL;
 		page = page->prev) {
@@ -41,14 +42,14 @@ static inline _page_header_t	*_get_page_with_available_caller_block(void)
 	return (NULL);
 }
 
-void	*_get_allocated_page_memory()
+void	*alloc_get_allocated_page_memory()
 {
 	_page_header_t	*page;
 
 	if (page_size_g == 0)
 		page_size_g = getpagesize();
 	if (last_page_g) {
-		page = _get_page_with_available_caller_block();
+		page = alloc_get_page_with_available_caller_block();
 		if (page) {
 			return (page);
 		}
@@ -56,7 +57,7 @@ void	*_get_allocated_page_memory()
 	page = last_page_g;
 	if (posix_memalign((void**) &last_page_g, page_size_g, page_size_g))
 		return (NULL);
-	if (_init_header_block(last_page_g))
+	if (alloc_init_header_block(last_page_g))
 		return (NULL);
 	if (page) {
 		last_page_g->prev = page;
@@ -65,7 +66,7 @@ void	*_get_allocated_page_memory()
 	return (last_page_g);
 }
 
-void	*_get_caller_at(_page_header_t *page, int idx)
+void	*alloc_get_caller_at(_page_header_t *page, int idx)
 {
 	void	*start = ((void*) page) + page->off;
 
