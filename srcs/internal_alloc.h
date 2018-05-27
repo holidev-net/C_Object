@@ -24,24 +24,24 @@ typedef struct _page_header_s {
 extern uint16_t		_total_available_caller_g;
 extern const size_t	_alignedSize_g;
 
-void	*_get_allocated_page_memory(void);
-void	*_get_caller_at(_page_header_t *page, int idx);
+void	*alloc_get_allocated_page_memory(void);
+void	*alloc_get_caller_at(_page_header_t *page, int idx);
 
-static inline uint8_t	_get_byte_for_caller(_page_header_t *page, int *ii)
+static inline uint8_t	alloc_get_byte_for_caller(_page_header_t *p, int *ii)
 {
 	int	i = 0;
 
 	for (; i < _total_available_caller_g; i++) {
-		if (~page->buf[i] & 0xFF) {
+		if (~p->buf[i] & 0xFF) {
 			*ii = i;
-			return ~page->buf[i];
+			return ~p->buf[i];
 		}
 	}
 	*ii = i;
 	return (0);
 }
 
-static inline void	*_get_caller_block(_page_header_t *page)
+static inline void	*alloc_get_caller_block(_page_header_t *page)
 {
 	uint8_t	byte;
 	int	i;
@@ -49,7 +49,7 @@ static inline void	*_get_caller_block(_page_header_t *page)
 
 	if (!page)
 		return (NULL);
-	byte = _get_byte_for_caller(page, &i);
+	byte = alloc_get_byte_for_caller(page, &i);
 	if (i == _total_available_caller_g)
 		return (NULL);
 	if (i * 8 + av > _total_available_caller_g) {
@@ -58,7 +58,7 @@ static inline void	*_get_caller_block(_page_header_t *page)
 	for (int j = av; j >= 0; j--) {
 		if (byte & 0x1) {
 			page->buf[i] |= 1 << (av - j);
-			return (_get_caller_at(page, i * 8 + j));
+			return (alloc_get_caller_at(page, i * 8 + j));
 		}
 		byte = byte >> 1;
 	}

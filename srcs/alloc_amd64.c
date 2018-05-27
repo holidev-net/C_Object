@@ -8,7 +8,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <unistd.h>
-#include "_alloc.h"
+#include "internal_alloc.h"
 
 #ifdef __amd64__
 
@@ -39,8 +39,8 @@ const size_t  _alignedSize_g =
 
 void	*create_caller(void *data_ptr, void *function_ptr, int arg_nbr)
 {
-	_page_header_t	*page = _get_allocated_page_memory();
-	void		*caller_block = _get_caller_block(page);
+	_page_header_t	*page = alloc_get_allocated_page_memory();
+	void		*caller_block = alloc_get_caller_block(page);
 
 	if (caller_block == NULL)
 		return (caller_block);
