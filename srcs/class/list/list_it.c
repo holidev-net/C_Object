@@ -52,6 +52,15 @@ bool list_it_is_end(list_it_t *this)
 	return (this->_elem == NULL);
 }
 
+static const member_wrap_t	members_tab[] = {
+	MEMBER_WRAP(list_it_t, prev, &list_it_prev, 0),
+	MEMBER_WRAP(list_it_t, next, &list_it_next, 0),
+	MEMBER_WRAP(list_it_t, move, &list_it_move, 1),
+	MEMBER_WRAP(list_it_t, is_start, &list_it_is_start, 0),
+	MEMBER_WRAP(list_it_t, is_end, &list_it_is_end, 0),
+	MEMBER_WRAP(list_it_t, get, &list_it_get, 0)
+};
+
 it_t	*init_list_it(void *list)
 {
 	list_it_t *obj = malloc(sizeof(list_it_t));
@@ -64,14 +73,7 @@ it_t	*init_list_it(void *list)
 		obj->_elem = NULL;
 	obj->_list = list;
 	obj->destr = (void *)delete_list_it;
-	init_members(obj, 6,
-		CREATE_WRAP(obj, prev, &list_it_prev, 0),
-		CREATE_WRAP(obj, next, &list_it_next, 0),
-		CREATE_WRAP(obj, move, &list_it_move, 1),
-		CREATE_WRAP(obj, is_start, &list_it_is_start, 0),
-		CREATE_WRAP(obj, is_end, &list_it_is_end, 0),
-		CREATE_WRAP(obj, get, &list_it_get, 0)
-	);
+	init_members(obj, PASS_MEMBERS_WRAP(members_tab));
 	return ((it_t *)obj);
 }
 
@@ -79,11 +81,6 @@ void	delete_list_it(list_it_t **obj)
 {
 	if (*obj == NULL)
 		return;
-	free_caller((*obj)->prev);
-	free_caller((*obj)->next);
-	free_caller((*obj)->move);
-	free_caller((*obj)->is_start);
-	free_caller((*obj)->is_end);
-	free_caller((*obj)->get);
+	free_members(*obj, PASS_MEMBERS_WRAP(members_tab));
 	free(*obj);
 }

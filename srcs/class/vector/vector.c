@@ -34,7 +34,26 @@ void remove_elem(size_t i, vector_t *this)
 	this->_datas[i] = NULL;
 }
 
-__APPROVED_BY(Alexandre)
+static const member_wrap_t	members_tab[] = {
+	MEMBER_WRAP(vector_t, size, &vector_size, 0),
+	MEMBER_WRAP(vector_t, resize, &vector_resize, 2),
+	MEMBER_WRAP(vector_t, capacity, &vector_capacity, 0),
+	MEMBER_WRAP(vector_t, empty, &vector_empty, 0),
+	MEMBER_WRAP(vector_t, reserve, &vector_reserve, 1),
+	MEMBER_WRAP(vector_t, shrink_to_fit, &vector_shrink_to_fit, 0),
+	MEMBER_WRAP(vector_t, at, &vector_at, 1),
+	MEMBER_WRAP(vector_t, front, &vector_front, 0),
+	MEMBER_WRAP(vector_t, back, &vector_back, 0),
+	MEMBER_WRAP(vector_t, assign, &vector_assign, 2),
+	MEMBER_WRAP(vector_t, push_back, &vector_push_back, 1),
+	MEMBER_WRAP(vector_t, pop_back, &vector_pop_back, 0),
+	MEMBER_WRAP(vector_t, insert, &vector_insert, 2),
+	MEMBER_WRAP(vector_t, erase, &vector_erase, 1),
+	MEMBER_WRAP(vector_t, swap, &vector_swap, 2),
+	MEMBER_WRAP(vector_t, clear, &vector_clear, 0)
+};
+
+__APPROVED_BY(Alexandre, Benjamin)
 vector_t *__init_vector(dup_data_func_t dup_func, free_data_func_t free_func)
 {
 	vector_t *obj = malloc(sizeof(vector_t));
@@ -46,24 +65,7 @@ vector_t *__init_vector(dup_data_func_t dup_func, free_data_func_t free_func)
 	obj->_datas = NULL;
 	obj->_size = 0;
 	obj->_capacity = 0;
-	init_members(obj, 16,
-		CREATE_WRAP(obj, size, &vector_size, 0),
-		CREATE_WRAP(obj, resize, &vector_resize, 2),
-		CREATE_WRAP(obj, capacity, &vector_capacity, 0),
-		CREATE_WRAP(obj, empty, &vector_empty, 0),
-		CREATE_WRAP(obj, reserve, &vector_reserve, 1),
-		CREATE_WRAP(obj, shrink_to_fit, &vector_shrink_to_fit, 0),
-		CREATE_WRAP(obj, at, &vector_at, 1),
-		CREATE_WRAP(obj, front, &vector_front, 0),
-		CREATE_WRAP(obj, back, &vector_back, 0),
-		CREATE_WRAP(obj, assign, &vector_assign, 2),
-		CREATE_WRAP(obj, push_back, &vector_push_back, 1),
-		CREATE_WRAP(obj, pop_back, &vector_pop_back, 0),
-		CREATE_WRAP(obj, insert, &vector_insert, 2),
-		CREATE_WRAP(obj, erase, &vector_erase, 1),
-		CREATE_WRAP(obj, swap, &vector_swap, 2),
-		CREATE_WRAP(obj, clear, &vector_clear, 0)
-	);
+	init_members(obj, PASS_MEMBERS_WRAP(members_tab));
 	return (obj);
 }
 
@@ -74,21 +76,6 @@ void	delete_vector(vector_t **obj)
 		return;
 	(*obj)->clear();
 	free((*obj)->_datas);
-	free_caller((*obj)->size);
-	free_caller((*obj)->resize);
-	free_caller((*obj)->capacity);
-	free_caller((*obj)->empty);
-	free_caller((*obj)->reserve);
-	free_caller((*obj)->shrink_to_fit);
-	free_caller((*obj)->at);
-	free_caller((*obj)->front);
-	free_caller((*obj)->back);
-	free_caller((*obj)->assign);
-	free_caller((*obj)->push_back);
-	free_caller((*obj)->pop_back);
-	free_caller((*obj)->insert);
-	free_caller((*obj)->erase);
-	free_caller((*obj)->swap);
-	free_caller((*obj)->clear);
+	free_members(*obj, PASS_MEMBERS_WRAP(members_tab));
 	free(*obj);
 }

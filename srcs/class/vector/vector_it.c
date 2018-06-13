@@ -47,6 +47,15 @@ bool vec_it_is_end(vec_it_t *this)
 	return (this->_pos == this->_vec->size());
 }
 
+static const member_wrap_t	members_tab[] = {
+	MEMBER_WRAP(vec_it_t, prev, &vec_it_prev, 0),
+	MEMBER_WRAP(vec_it_t, next, &vec_it_next, 0),
+	MEMBER_WRAP(vec_it_t, move, &vec_it_move, 1),
+	MEMBER_WRAP(vec_it_t, is_start, &vec_it_is_start, 0),
+	MEMBER_WRAP(vec_it_t, is_end, &vec_it_is_end, 0),
+	MEMBER_WRAP(vec_it_t, get, &vec_it_get, 0)
+};
+
 it_t	*init_vec_it(void *vec)
 {
 	vec_it_t *obj = malloc(sizeof(vec_it_t));
@@ -56,14 +65,7 @@ it_t	*init_vec_it(void *vec)
 	obj->_pos = 0;
 	obj->_vec = vec;
 	obj->destr = (void *)delete_vec_it;
-	init_members(obj, 6,
-		CREATE_WRAP(obj, prev, &vec_it_prev, 0),
-		CREATE_WRAP(obj, next, &vec_it_next, 0),
-		CREATE_WRAP(obj, move, &vec_it_move, 1),
-		CREATE_WRAP(obj, is_start, &vec_it_is_start, 0),
-		CREATE_WRAP(obj, is_end, &vec_it_is_end, 0),
-		CREATE_WRAP(obj, get, &vec_it_get, 0)
-	);
+	init_members(obj, PASS_MEMBERS_WRAP(members_tab));
 	return ((it_t *)obj);
 }
 
@@ -71,11 +73,6 @@ void	delete_vec_it(vec_it_t **obj)
 {
 	if (*obj == NULL)
 		return;
-	free_caller((*obj)->prev);
-	free_caller((*obj)->next);
-	free_caller((*obj)->move);
-	free_caller((*obj)->is_start);
-	free_caller((*obj)->is_end);
-	free_caller((*obj)->get);
+	free_members(*obj, PASS_MEMBERS_WRAP(members_tab));
 	free(*obj);
 }
