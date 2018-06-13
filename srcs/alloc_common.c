@@ -73,7 +73,7 @@ void	*alloc_get_caller_at(_page_header_t *page, int idx)
 	return (start + (_alignedSize_g * idx));
 }
 
-void	free_caller(void *caller)
+void	free_capture(void *caller)
 {
 	_page_header_t	*page = (void*) ((uintptr_t) caller & -page_size_g);
 	void		*start = ((void*) page) + page->off;

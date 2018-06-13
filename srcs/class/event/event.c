@@ -10,6 +10,11 @@
 #include "private_event.h"
 #include "event.h"
 
+static const member_wrap_t	members_tab[] = {
+	MEMBER_WRAP(event_t, get_name, &event_get_name, 0),
+	MEMBER_WRAP(event_t, add_event, &event_add_event, 1)
+};
+
 const char	*event_get_name(event_t *this)
 {
 	return (this->_name);
@@ -44,10 +49,7 @@ event_t	*init_event(const char *name)
 	if (obj->_name == NULL)
 		throw_event("error malloc");
 	obj->_events = new(list);
-	init_members(obj, 2, 
-		CREATE_WRAP(obj, get_name, &event_get_name, 0),
-		CREATE_WRAP(obj, add_event, &event_add_event, 1)
-	);
+	init_members(obj, PASS_MEMBERS_WRAP(members_tab));
 	obj->fire = event_fire;
 	return (obj);
 }
@@ -56,6 +58,7 @@ void	delete_event(event_t **obj)
 {
 	if (*obj == NULL)
 		return;
+	free_members(*obj, PASS_MEMBERS_WRAP(members_tab));
 	delete(list, (*obj)->_events);
 	free((*obj)->_name);
 	free((*obj));

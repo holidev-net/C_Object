@@ -11,28 +11,24 @@
 #include <stdarg.h>
 #include "cobject.h"
 
-static inline int init_member_write_member_callers(
-	void *obj, va_list vl, int nb_functs)
+int	init_members(void *obj, member_wrap_t const *tab, size_t len)
 {
-	init_wrap_t     cur_wrapper;
+	void	*ptr; 
 
-	while (nb_functs--) {
-		cur_wrapper = va_arg(vl, init_wrap_t);
-		*(cur_wrapper.funct) = create_caller(
-			obj, cur_wrapper.target, cur_wrapper.nb_args);
-		if (*(cur_wrapper.funct) == NULL) {
+	for (size_t i = 0; i < len; i++) {
+		ptr = create_capture(obj, tab[i].target, tab[i].nb_args);
+		if (ptr == NULL)
 			return (-1);
-		}
+		*((void**) (obj + tab[i].funct_off)) = ptr;
 	}
-	va_end(vl);
 	return (0);
 }
 
-int init_members(void *obj, int nb_functs, ...)
+void	free_members(void *obj, member_wrap_t const *tab, size_t len)
 {
-	va_list	vl;
-
-	va_start(vl, nb_functs);
-	return (init_member_write_member_callers(
-		obj, vl, nb_functs));
+	if (!obj || !tab)
+		return;
+	for (size_t i = 0; i < len; i++) {
+		free_capture(*((void**) (obj + tab[i].funct_off)));
+	}
 }

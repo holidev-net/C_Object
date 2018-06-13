@@ -37,7 +37,7 @@ const size_t  _alignedSize_g =
 	sizeof(_caller_template_g) / ALIGN * ALIGN +
 	!!(sizeof(_caller_template_g) % ALIGN) * ALIGN;
 
-void	*create_caller(void *data_ptr, void *function_ptr, int arg_nbr)
+void	*create_capture(void *data_ptr, void *function_ptr, int arg_nbr)
 {
 	_page_header_t	*page = alloc_get_allocated_page_memory();
 	void		*caller_block = alloc_get_caller_block(page);
@@ -54,7 +54,7 @@ void	*create_caller(void *data_ptr, void *function_ptr, int arg_nbr)
 	return (caller_block);
 }
 
-void	*get_capture(void *caller)
+void	*get_capture_data(void *caller)
 {
 	return *((void **) (caller + 12));
 }

@@ -12,18 +12,20 @@
 #include "private_stream.h"
 #include "stream.h"
 
+static const member_wrap_t	members_tab[] = {
+	MEMBER_WRAP(stream_t, str, &write_str, 1),
+	MEMBER_WRAP(stream_t, c, &write_c, 1),
+	MEMBER_WRAP(stream_t, i, &write_i, 1),
+	MEMBER_WRAP(stream_t, ld, &write_ld, 1),
+	MEMBER_WRAP(stream_t, endl, &write_endl, 0),
+	MEMBER_WRAP(stream_t, flush, &flush, 0),
+	MEMBER_WRAP(stream_t, src, &write_src, 1)
+};
+
 void stream_ctor(stream_t *obj)
 {
 	obj->stream = stdout;
-	init_members(obj, 7,
-		CREATE_WRAP(obj, str, &write_str, 1),
-		CREATE_WRAP(obj, c, &write_c, 1),
-		CREATE_WRAP(obj, i, &write_i, 1),
-		CREATE_WRAP(obj, ld, &write_ld, 1),
-		CREATE_WRAP(obj, endl, &write_endl, 0),
-		CREATE_WRAP(obj, flush, &flush, 0),
-		CREATE_WRAP(obj, src, &write_src, 1)
-		);
+	init_members(obj, PASS_MEMBERS_WRAP(members_tab));
 }
 
 stream_t	*init_stream0(void)
@@ -53,13 +55,7 @@ void		delete_stream(stream_t **obj)
 {
 	if (*obj == NULL)
 		return;
-	free_caller((*obj)->str);
-	free_caller((*obj)->c);
-	free_caller((*obj)->i);
-	free_caller((*obj)->ld);
-	free_caller((*obj)->endl);
-	free_caller((*obj)->flush);
-	free_caller((*obj)->src);
+	free_members(*obj, PASS_MEMBERS_WRAP(members_tab));
 	free(*obj);
 }
 

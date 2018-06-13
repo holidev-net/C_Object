@@ -14,7 +14,7 @@
 		_1(av)						\
 	}), sizeof(struct cap_s));				\
 	ret __lbd__ body;					\
-	lbd_result_ = create_caller(shr, __lbd__, nb_args);	\
+	lbd_result_ = create_capture(shr, __lbd__, nb_args);	\
 	lbd_result_;						\
 });
 
@@ -29,7 +29,7 @@
 		_2(av)						\
 	}), sizeof(struct cap_s));				\
 	ret __lbd__ body;					\
-	lbd_result_ = create_caller(shr, __lbd__, nb_args);	\
+	lbd_result_ = create_capture(shr, __lbd__, nb_args);	\
 	lbd_result_;						\
 });
 
@@ -46,14 +46,14 @@
 		_3(av)						\
 	}), sizeof(struct cap_s));				\
 	ret __lbd__ body;					\
-	lbd_result_ = create_caller(shr, __lbd__, nb_args);	\
+	lbd_result_ = create_capture(shr, __lbd__, nb_args);	\
 	lbd_result_;						\
 });
 
 static inline void	free_lambda(void *lbd)
 {
-	free(get_capture(lbd));
-	free_caller(lbd);
+	free(get_capture_data(lbd));
+	free_capture(lbd);
 }
 
 static inline void	__free_lamdba(void *lbd)
