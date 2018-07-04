@@ -50,7 +50,6 @@ void	*create_capture(void *data_ptr, void *function_ptr, int arg_nbr)
 	*((short *) (caller_block + 10)) = _asmmov_g[arg_nbr];
 	*((void **) (caller_block + 12)) = data_ptr;
 	page->available--;
-
 	return (caller_block);
 }
 
