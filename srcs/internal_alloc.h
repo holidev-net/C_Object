@@ -27,14 +27,15 @@ extern const size_t	_alignedSize_g;
 void	*alloc_get_allocated_page_memory(void);
 void	*alloc_get_caller_at(_page_header_t *page, int idx);
 
-static inline uint8_t	alloc_get_byte_for_caller(_page_header_t *p, int *ii)
+static inline uint8_t	alloc_get_byte_for_caller(_page_header_t *p,
+							int *ii)
 {
 	int	i = 0;
 
 	for (; i < _total_available_caller_g; i++) {
 		if (~p->buf[i] & 0xFF) {
 			*ii = i;
-			return ~p->buf[i];
+			return (~p->buf[i]);
 		}
 	}
 	*ii = i;
@@ -45,19 +46,15 @@ static inline void	*alloc_get_caller_block(_page_header_t *page)
 {
 	uint8_t	byte;
 	int	i;
-	int	av = 7;
 
 	if (!page)
 		return (NULL);
 	byte = alloc_get_byte_for_caller(page, &i);
 	if (i == _total_available_caller_g)
 		return (NULL);
-	if (i * 8 + av > _total_available_caller_g) {
-		av -= _total_available_caller_g % 8;
-	}
-	for (int j = av; j >= 0; j--) {
+	for (int j = 7; j >= 0; j--) {
 		if (byte & 0x1) {
-			page->buf[i] |= 1 << (av - j);
+			page->buf[i] |= 1 << (7 - j);
 			return (alloc_get_caller_at(page, i * 8 + j));
 		}
 		byte = byte >> 1;

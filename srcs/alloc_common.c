@@ -23,6 +23,9 @@ static inline int	alloc_init_header_block(void *page)
 
 	memset(page, 0, page_size_g);
 	h->available = available - ((sizeof(h) + available) / _alignedSize_g);
+	h->available = (h->available % 8
+				? h->available - (h->available % 8)
+				: h->available);
 	h->off = _alignedSize_g * (available - h->available);
 	if (_total_available_caller_g == 0) {
 		_total_available_caller_g = h->available;
@@ -32,7 +35,7 @@ static inline int	alloc_init_header_block(void *page)
 }
 
 static inline _page_header_t	*alloc_get_page_with_available_caller_block
-									(void)
+								(void)
 {
 	for (_page_header_t *page = last_page_g; page != NULL;
 		page = page->prev) {
@@ -42,7 +45,7 @@ static inline _page_header_t	*alloc_get_page_with_available_caller_block
 	return (NULL);
 }
 
-void	*alloc_get_allocated_page_memory()
+void	*alloc_get_allocated_page_memory(void)
 {
 	_page_header_t	*page;
 
@@ -75,14 +78,12 @@ void	*alloc_get_caller_at(_page_header_t *page, int idx)
 
 void	free_capture(void *caller)
 {
-	_page_header_t	*page = (void*) ((uintptr_t) caller & -page_size_g);
+	_page_header_t *page = (void*) ((uintptr_t) caller & -page_size_g);
 	void		*start = ((void*) page) + page->off;
-	int		idx = ((uintptr_t) caller - (uintptr_t) start)
+	int		ix = ((uintptr_t) caller - (uintptr_t) start)
 				/ _alignedSize_g;
-	int		x = idx / 8;
-	int		y = idx % 8;
 
-	page->buf[x] &= ~(0x1 << (7 - y));
+	page->buf[ix / 8] &= ~(0x1 << (7 - (ix % 8)));
 	page->available++;
 	if (page->available == _total_available_caller_g) {
 		if (page->prev)
